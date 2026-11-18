@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IM Portfolio &amp; Attribution Frame (Live)</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+  <meta name="referrer" content="no-referrer" />
+  <title>Secure Terminal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -317,7 +319,8 @@ const STATE = {
   posSortDir: 'desc',
   trades: {},
   ltSearch: '',
-  expandedLt: 'ALPHABET INC (Class A + C)',
+  expandedLt: '',
+  repoApiPrivate: false,
   fcnShockSpx: 0,
   fcnShockNky: 0,
   fcnShockSx5e: 0,
@@ -431,74 +434,89 @@ function showLiveToast(msg) {
 
 async function pollLiveSnapshot(isManual = false) {
   if (!STATE.unlocked || !STATE.passkey || typeof fetch !== 'function') return;
-  const apiUrl = `https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.path}?ref=${GH_CONFIG.branch}`;
-  const headers = {};
-  if (STATE.lastEtag && !isManual) headers['If-None-Match'] = STATE.lastEtag;
   const savedTok = getSavedToken();
-  if (savedTok) headers['Authorization'] = 'Bearer ' + savedTok;
+  if (savedTok || !STATE.repoApiPrivate) {
+    const apiUrl = `https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.path}?ref=${GH_CONFIG.branch}`;
+    const headers = {};
+    if (STATE.lastEtag && !isManual) headers['If-None-Match'] = STATE.lastEtag;
+    if (savedTok) headers['Authorization'] = 'Bearer ' + savedTok;
 
-  try {
-    let res = await fetch(apiUrl, { headers, cache: 'no-cache' });
-    if (res.status === 401 && headers['Authorization']) {
-      delete headers['Authorization'];
-      res = await fetch(apiUrl, { headers, cache: 'no-cache' });
-    }
-    STATE.lastChecked = sgtNowStr();
-    if (res.status === 304) {
-      if (STATE.cloudStatus !== 'live') { STATE.cloudStatus = 'live'; if (!STATE.syncModalOpen) render(); }
-      return;
-    }
-    if (res.ok) {
-      const etag = res.headers.get('ETag');
-      if (etag) STATE.lastEtag = etag;
-      const payload = await res.json();
-      const wasConnected = Boolean(STATE.lastSha);
-      if (payload && payload.sha && payload.content) {
+    try {
+      let res = await fetch(apiUrl, { headers, cache: 'no-cache' });
+      if (res.status === 401 && headers['Authorization']) {
+        delete headers['Authorization'];
+        res = await fetch(apiUrl, { headers, cache: 'no-cache' });
+      }
+      if ((res.status === 404 || res.status === 403) && !savedTok) {
+        STATE.repoApiPrivate = true;
+      } else {
+        STATE.lastChecked = sgtNowStr();
+        if (res.status === 304) {
+          if (STATE.cloudStatus !== 'live') { STATE.cloudStatus = 'live'; if (!STATE.syncModalOpen) render(); }
+          return;
+        }
+        if (res.ok) {
+          const etag = res.headers.get('ETag');
+          if (etag) STATE.lastEtag = etag;
+          const payload = await res.json();
+          const wasConnected = Boolean(STATE.lastSha);
+          if (payload && payload.sha && payload.content) {
+            const prevVersion = STATE.data && STATE.data.meta ? STATE.data.meta.version_id : '';
+            STATE.lastSha = payload.sha;
+            const rawEnvelope = JSON.parse(base64ToUtf8(payload.content));
+            const envVersion = rawEnvelope.version_id || (rawEnvelope.meta ? rawEnvelope.meta.version_id : '');
+            STATE.cloudStatus = 'live';
+            if (envVersion !== prevVersion) {
+              const remoteData = rawEnvelope.sealed ? await unsealPayload(rawEnvelope, STATE.passkey) : rawEnvelope;
+              if (remoteData && Array.isArray(remoteData.mandates)) {
+                STATE.data = remoteData;
+                if (!STATE.expandedLt && remoteData.top10 && remoteData.top10[0]) STATE.expandedLt = remoteData.top10[0].name;
+                if (!STATE.syncModalOpen) render();
+                if (wasConnected || isManual) {
+                  showLiveToast('Live update received — ' + (remoteData.meta.locked_at || remoteData.meta.as_of_date));
+                }
+                return;
+              }
+            }
+          }
+          if (STATE.cloudStatus !== 'live') { STATE.cloudStatus = 'live'; if (!STATE.syncModalOpen) render(); }
+          if (isManual) showLiveToast('Already up to date (' + (STATE.data.meta.as_of_date || 'Latest') + ')');
+          return;
+        }
+      }
+    } catch (_) {}
+  }
+
+  const fallbackUrls = [`data/snapshot.json?t=${Date.now()}`, `${GH_CONFIG.liveUrl}${GH_CONFIG.path}?t=${Date.now()}`];
+  for (const cdnUrl of fallbackUrls) {
+    try {
+      const res2 = await fetch(cdnUrl, { cache: 'no-store' });
+      if (res2.ok) {
+        STATE.lastChecked = sgtNowStr();
+        const rawEnvelope = await res2.json();
         const prevVersion = STATE.data && STATE.data.meta ? STATE.data.meta.version_id : '';
-        STATE.lastSha = payload.sha;
-        const rawEnvelope = JSON.parse(base64ToUtf8(payload.content));
         const envVersion = rawEnvelope.version_id || (rawEnvelope.meta ? rawEnvelope.meta.version_id : '');
+        const wasLive = STATE.cloudStatus === 'live';
         STATE.cloudStatus = 'live';
         if (envVersion !== prevVersion) {
           const remoteData = rawEnvelope.sealed ? await unsealPayload(rawEnvelope, STATE.passkey) : rawEnvelope;
           if (remoteData && Array.isArray(remoteData.mandates)) {
             STATE.data = remoteData;
+            if (!STATE.expandedLt && remoteData.top10 && remoteData.top10[0]) STATE.expandedLt = remoteData.top10[0].name;
             if (!STATE.syncModalOpen) render();
-            if (wasConnected || isManual) {
-              showLiveToast('Live update received — ' + (remoteData.meta.locked_at || remoteData.meta.as_of_date));
-            }
+            showLiveToast('Live update received — ' + (remoteData.meta.locked_at || remoteData.meta.as_of_date));
             return;
           }
         }
+        if (!wasLive && !STATE.syncModalOpen) render();
+        if (isManual) showLiveToast('Already up to date (' + (STATE.data.meta.as_of_date || 'Latest') + ')');
+        return;
       }
-      if (STATE.cloudStatus !== 'live') { STATE.cloudStatus = 'live'; if (!STATE.syncModalOpen) render(); }
-      if (isManual) showLiveToast('Already up to date (' + (STATE.data.meta.as_of_date || 'Latest') + ')');
-      return;
-    }
-  } catch (_) {}
-
-  try {
-    const cdnUrl = `${GH_CONFIG.liveUrl}${GH_CONFIG.path}?t=${Date.now()}`;
-    const res2 = await fetch(cdnUrl, { cache: 'no-store' });
-    if (res2.ok) {
-      const rawEnvelope = await res2.json();
-      const prevVersion = STATE.data && STATE.data.meta ? STATE.data.meta.version_id : '';
-      const envVersion = rawEnvelope.version_id || (rawEnvelope.meta ? rawEnvelope.meta.version_id : '');
-      STATE.cloudStatus = 'live';
-      if (envVersion !== prevVersion) {
-        const remoteData = rawEnvelope.sealed ? await unsealPayload(rawEnvelope, STATE.passkey) : rawEnvelope;
-        if (remoteData && Array.isArray(remoteData.mandates)) {
-          STATE.data = remoteData;
-          if (!STATE.syncModalOpen) render();
-          showLiveToast('Live update received — ' + (remoteData.meta.locked_at || remoteData.meta.as_of_date));
-        }
-      }
-    }
-  } catch (_) {
-    if (STATE.cloudStatus === 'connecting') {
-      STATE.cloudStatus = 'offline';
-      if (!STATE.syncModalOpen) render();
-    }
+    } catch (_) {}
+  }
+  if (STATE.cloudStatus === 'connecting') {
+    STATE.cloudStatus = 'offline';
+    if (!STATE.syncModalOpen) render();
   }
 }
 
@@ -830,7 +848,7 @@ function syncWorkbookSheets(sheetMap) {
       const ikey = normIssuerKey(nm);
       const issObj = issMap[ikey];
       const multiClass = issObj && issObj.tickers.size > 1;
-      const dispName = (ikey === 'ALPHABET INC' && multiClass) ? 'ALPHABET INC (Class A + C)' : String(nm).trim();
+      const dispName = multiClass ? (ikey + ' (' + Array.from(issObj.tickers).join(' + ') + ')') : String(nm).trim();
       const dispTk = multiClass ? Array.from(issObj.tickers).join('+') + ' ' + (String(tk).split(' ')[1] || '') : String(tk).trim();
       newTop10.push({
         name: dispName,
@@ -1062,7 +1080,7 @@ function renderOverview() {
           </div>
           <div class="space-y-3.5">${perfBars}</div>
           <div class="mt-4 pt-3 border-t border-[var(--border)] flex flex-wrap justify-between gap-2 text-xs text-[var(--muted-foreground)]">
-            <span>S&amp;P 500 YTD: <strong class="text-[var(--foreground)]">${fmtPct(d.macro.spx_ytd, 2, true)}</strong> (50-DMA: 7,667)</span>
+            <span>S&amp;P 500 YTD: <strong class="text-[var(--foreground)]">${fmtPct(d.macro.spx_ytd, 2, true)}</strong> (Sharpe: ${fmtNum(d.macro.spx_sharpe_ytd, 2)})</span>
             <span>MSCI ACWI Sharpe: <strong class="text-[var(--foreground)]">${fmtNum(d.macro.acwi_sharpe_ytd, 2)}</strong></span>
           </div>
         </div>
@@ -1265,7 +1283,8 @@ function renderPositions() {
 
 function renderLookthrough() {
   const d = STATE.data;
-  const quickTerms = ['', 'PALANTIR', 'ALPHABET', 'NVIDIA', 'TAIWAN SEMI', 'UNITEDHEALTH', 'BROADCOM', 'DBS'];
+  const dynTerms = Array.from(new Set((d.top10 || []).slice(0, 7).map(x => normIssuerKey(x.name).split(/\s+/)[0].toUpperCase()).filter(Boolean)));
+  const quickTerms = ['', ...dynTerms];
   const q = STATE.ltSearch.trim().toLowerCase();
   const filteredConst = d.constituents.filter(c => !q || (c.n + ' ' + c.t + ' ' + c.c).toLowerCase().includes(q)).slice(0, 20);
   const totalSearchWeight = q ? d.constituents.filter(c => (c.n + ' ' + c.t).toLowerCase().includes(q)).reduce((s, c) => s + c.w, 0) : null;
@@ -1320,7 +1339,7 @@ function renderLookthrough() {
         <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
           <div>
             <h3 class="font-semibold text-sm text-[var(--foreground)]">Top 10 Effective Portfolio Holdings &amp; Earnings Catalyst Monitor</h3>
-            <p class="text-xs text-[var(--muted-foreground)]">Grouped share classes (e.g. GOOGL + GOOG consolidated) &bull; Click any holding to inspect sleeve attribution</p>
+            <p class="text-xs text-[var(--muted-foreground)]">Multi-class share lines consolidated &bull; Click any holding to inspect sleeve attribution</p>
           </div>
         </div>
         <div class="overflow-x-auto">
@@ -1352,7 +1371,7 @@ function renderLookthrough() {
             ${totalSearchWeight !== null ? `<span class="px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-semibold">Matched Exposure: ${fmtPct(totalSearchWeight, 3)}</span>` : ''}
           </div>
           <div class="flex flex-wrap items-center gap-2 mb-3">
-            <input type="text" placeholder="Search company or ticker (e.g. Palantir, TSM, UNH)..."
+            <input type="text" placeholder="Search company, ticker, or country..."
               value="${escHtml(STATE.ltSearch)}" oninput="STATE.ltSearch=this.value;render()"
               class="px-3 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] flex-1 min-w-[200px]" />
             ${quickTerms.map(t => `<button onclick="STATE.ltSearch='${t}';render()" class="px-2.5 py-1 rounded text-xs font-medium ${STATE.ltSearch.toUpperCase() === t ? 'bg-blue-600 text-white' : 'bg-[var(--secondary)] text-[var(--muted-foreground)] hover:text-[var(--foreground)]'}">${t || 'Top 20'}</button>`).join('')}
@@ -1383,7 +1402,7 @@ function renderLookthrough() {
 
         <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
           <h3 class="font-semibold text-sm text-[var(--foreground)] mb-1">Geographic Look-Through vs MSCI ACWI</h3>
-          <p class="text-xs text-[var(--muted-foreground)] mb-3">Active overweight in Singapore (+4.0%) &amp; Switzerland (+3.6%) vs US (-32.9%)</p>
+          <p class="text-xs text-[var(--muted-foreground)] mb-3">Portfolio country exposure vs MSCI ACWI benchmark weights</p>
           <div class="overflow-x-auto max-h-80 overflow-y-auto">
             <table class="w-full border-collapse">
               <thead>
@@ -1490,15 +1509,15 @@ function renderFcns() {
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
           <div class="p-3 rounded-lg bg-[var(--secondary)]/50">
-            <div class="flex justify-between mb-1 font-medium"><span>S&amp;P 500 (Spot 7,561.7)</span><span class="font-mono ${colorCls(STATE.fcnShockSpx)}">${STATE.fcnShockSpx > 0 ? '+' : ''}${STATE.fcnShockSpx}%</span></div>
+            <div class="flex justify-between mb-1 font-medium"><span>S&amp;P 500${d.fcns[0]?.underlyings?.[0] ? ' (Spot ' + fmtNum(d.fcns[0].underlyings[0].last, 1) + ')' : ''}</span><span class="font-mono ${colorCls(STATE.fcnShockSpx)}">${STATE.fcnShockSpx > 0 ? '+' : ''}${STATE.fcnShockSpx}%</span></div>
             <input type="range" min="-45" max="15" step="1" value="${STATE.fcnShockSpx}" oninput="STATE.fcnShockSpx=Number(this.value);render()" class="w-full accent-blue-600" />
           </div>
           <div class="p-3 rounded-lg bg-[var(--secondary)]/50">
-            <div class="flex justify-between mb-1 font-medium"><span>Nikkei 225 (Spot 60,182.5)</span><span class="font-mono ${colorCls(STATE.fcnShockNky)}">${STATE.fcnShockNky > 0 ? '+' : ''}${STATE.fcnShockNky}%</span></div>
+            <div class="flex justify-between mb-1 font-medium"><span>Nikkei 225${d.fcns[0]?.underlyings?.[1] ? ' (Spot ' + fmtNum(d.fcns[0].underlyings[1].last, 1) + ')' : ''}</span><span class="font-mono ${colorCls(STATE.fcnShockNky)}">${STATE.fcnShockNky > 0 ? '+' : ''}${STATE.fcnShockNky}%</span></div>
             <input type="range" min="-45" max="20" step="1" value="${STATE.fcnShockNky}" oninput="STATE.fcnShockNky=Number(this.value);render()" class="w-full accent-blue-600" />
           </div>
           <div class="p-3 rounded-lg bg-[var(--secondary)]/50">
-            <div class="flex justify-between mb-1 font-medium"><span>Euro Stoxx 50 (Spot 6,386.9)</span><span class="font-mono ${colorCls(STATE.fcnShockSx5e)}">${STATE.fcnShockSx5e > 0 ? '+' : ''}${STATE.fcnShockSx5e}%</span></div>
+            <div class="flex justify-between mb-1 font-medium"><span>Euro Stoxx 50${d.fcns[0]?.underlyings?.[2] ? ' (Spot ' + fmtNum(d.fcns[0].underlyings[2].last, 1) + ')' : ''}</span><span class="font-mono ${colorCls(STATE.fcnShockSx5e)}">${STATE.fcnShockSx5e > 0 ? '+' : ''}${STATE.fcnShockSx5e}%</span></div>
             <input type="range" min="-45" max="15" step="1" value="${STATE.fcnShockSx5e}" oninput="STATE.fcnShockSx5e=Number(this.value);render()" class="w-full accent-blue-600" />
           </div>
         </div>
@@ -1526,12 +1545,12 @@ function renderAudit() {
           </div>
           <div class="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
             <div class="text-[var(--muted-foreground)]">Workbook Size</div>
-            <div class="text-lg font-bold text-amber-600 dark:text-amber-400">5.42 MB &rarr; 101 KB</div>
-            <div class="text-[var(--muted-foreground)]">88% fewer BBG calls</div>
+            <div class="text-lg font-bold text-amber-600 dark:text-amber-400">Encrypted v2</div>
+            <div class="text-[var(--muted-foreground)]">Deflate + PBKDF2-SHA256</div>
           </div>
         </div>
         <ul class="space-y-2 text-[var(--foreground)] list-disc pl-4">
-          <li><strong>Zero-Backend Live Broadcast for Everyone:</strong> Uploading <code>Portfolio_Bloomberg_Feeder_Optimized.xlsx</code> parses &amp; strips confidential dollar figures locally in your browser and encrypts the sanitized snapshot (PBKDF2-HMAC-SHA256) with the team passkey before committing to <code>data/snapshot.json</code> on GitHub.</li>
+          <li><strong>Zero-Backend Live Broadcast for Everyone:</strong> Uploading your Feeder <code>.xlsx</code> workbook parses &amp; strips confidential dollar figures locally in your browser and encrypts the sanitized snapshot (PBKDF2-HMAC-SHA256) with the team passkey before committing to <code>data/snapshot.json</code> on GitHub.</li>
           <li><strong>Automatic Live Screen Refresh:</strong> Every colleague viewing <a href="${GH_CONFIG.liveUrl}" target="_blank" class="text-blue-600 dark:text-blue-400 underline">${GH_CONFIG.liveUrl}</a> polls GitHub using zero-quota HTTP <code>ETag</code> checks every 10 seconds and updates on screen automatically without refreshing.</li>
           <li><strong>Manual Premarket % Columns Wired End-to-End:</strong> Empty <code>%</code>-formatted blue cells in <code>2_Holdings_Ledger!F4:F17</code> (Growth positions) and <code>4_Lookthrough_Exposure!E56:E65</code> (Top 10 effective holdings) sync straight to the live site.</li>
         </ul>
@@ -1542,7 +1561,7 @@ function renderAudit() {
         <div class="space-y-3">
           <div class="p-3 rounded-lg bg-[var(--secondary)]/60 border border-[var(--border)]">
             <div class="font-semibold text-[var(--foreground)]">1. Save Feeder Workbook at Bloomberg Terminal</div>
-            <p class="text-[var(--muted-foreground)] mt-0.5">Open <code>Portfolio_Bloomberg_Feeder_Optimized.xlsx</code>, optionally enter premarket % in <code>2_Holdings_Ledger!Col F</code> and <code>4_Lookthrough_Exposure!Col E</code>, and press <code>Ctrl+S</code>.</p>
+            <p class="text-[var(--muted-foreground)] mt-0.5">Open your Feeder <code>.xlsx</code> workbook, optionally enter premarket % in <code>2_Holdings_Ledger!Col F</code> and <code>4_Lookthrough_Exposure!Col E</code>, and press <code>Ctrl+S</code>.</p>
           </div>
           <div class="p-3 rounded-lg bg-[var(--secondary)]/60 border border-[var(--border)]">
             <div class="font-semibold text-[var(--foreground)]">2. Drop Excel into "Upload &amp; Publish Live"</div>
@@ -1605,7 +1624,7 @@ function renderSyncModal() {
         </div>
 
         <label class="block border-2 border-dashed border-blue-500/50 hover:border-blue-500 rounded-xl p-6 text-center cursor-pointer bg-blue-500/5 transition-colors">
-          <div class="font-semibold text-sm text-[var(--foreground)] mb-1">Drop <code>Portfolio_Bloomberg_Feeder_Optimized.xlsx</code> Here or Click to Browse</div>
+          <div class="font-semibold text-sm text-[var(--foreground)] mb-1">Drop your Feeder <code>.xlsx</code> workbook Here or Click to Browse</div>
           <div class="text-xs text-[var(--muted-foreground)]">Syncs all 5 mandates, Growth Premarket % (<code>Col F</code>), and Top 10 Premarket % (<code>Col E</code>) &amp; broadcasts live</div>
           <input type="file" accept=".xlsx" class="hidden" onchange="if(this.files[0]) importXlsxFile(this.files[0])" />
         </label>
@@ -1625,26 +1644,30 @@ function renderSyncModal() {
 
 
 async function fetchRemoteEnvelope() {
-  const apiUrl = `https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.path}?ref=${GH_CONFIG.branch}`;
-  const headers = {};
   const savedTok = getSavedToken();
-  if (savedTok) headers['Authorization'] = 'Bearer ' + savedTok;
-  try {
-    let res = await fetch(apiUrl, { headers, cache: 'no-cache' });
-    if (res.status === 401 && headers['Authorization']) {
-      delete headers['Authorization'];
-      res = await fetch(apiUrl, { headers, cache: 'no-cache' });
-    }
-    if (res.ok) {
-      const etag = res.headers.get('ETag');
-      if (etag) STATE.lastEtag = etag;
-      const payload = await res.json();
-      if (payload && payload.content) {
-        if (payload.sha) STATE.lastSha = payload.sha;
-        return JSON.parse(base64ToUtf8(payload.content));
+  if (savedTok || !STATE.repoApiPrivate) {
+    const apiUrl = `https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.path}?ref=${GH_CONFIG.branch}`;
+    const headers = {};
+    if (savedTok) headers['Authorization'] = 'Bearer ' + savedTok;
+    try {
+      let res = await fetch(apiUrl, { headers, cache: 'no-cache' });
+      if (res.status === 401 && headers['Authorization']) {
+        delete headers['Authorization'];
+        res = await fetch(apiUrl, { headers, cache: 'no-cache' });
       }
-    }
-  } catch (_) {}
+      if ((res.status === 404 || res.status === 403) && !savedTok) {
+        STATE.repoApiPrivate = true;
+      } else if (res.ok) {
+        const etag = res.headers.get('ETag');
+        if (etag) STATE.lastEtag = etag;
+        const payload = await res.json();
+        if (payload && payload.content) {
+          if (payload.sha) STATE.lastSha = payload.sha;
+          return JSON.parse(base64ToUtf8(payload.content));
+        }
+      }
+    } catch (_) {}
+  }
 
   const urls = [`data/snapshot.json?t=${Date.now()}`, `${GH_CONFIG.liveUrl}${GH_CONFIG.path}?t=${Date.now()}`];
   for (const u of urls) {
@@ -1675,6 +1698,7 @@ async function submitPasskey(rawKey) {
     STATE.lastSha = '';
     if (decrypted && Array.isArray(decrypted.mandates)) {
       STATE.data = decrypted;
+      if (!STATE.expandedLt && decrypted.top10 && decrypted.top10[0]) STATE.expandedLt = decrypted.top10[0].name;
       STATE.unlocked = true;
       STATE.unlockBusy = false;
       STATE.unlockError = '';
@@ -1687,6 +1711,7 @@ async function submitPasskey(rawKey) {
     const remoteData = remoteEnv.sealed ? await unsealPayload(remoteEnv, candidate) : remoteEnv;
     if (!remoteData || !Array.isArray(remoteData.mandates)) throw new Error('Snapshot unavailable');
     STATE.data = remoteData;
+    if (!STATE.expandedLt && remoteData.top10 && remoteData.top10[0]) STATE.expandedLt = remoteData.top10[0].name;
     STATE.unlocked = true;
     STATE.unlockBusy = false;
     STATE.unlockError = '';
@@ -1733,12 +1758,12 @@ function renderPasskeyGate() {
           </div>
           <div>
             <div class="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">Encrypted Portal</div>
-            <h1 class="text-base font-bold text-[var(--foreground)]">IM Portfolio &amp; Attribution Frame</h1>
+            <h1 class="text-base font-bold text-[var(--foreground)]">Restricted Access Terminal</h1>
           </div>
         </div>
 
         <p class="text-xs text-[var(--muted-foreground)] leading-relaxed">
-          This terminal is protected with client-side cryptographic encryption. Enter your team passkey to decrypt and view live portfolio holdings &amp; attribution.
+          This portal is protected with client-side cryptographic encryption. Enter your access passkey to unlock.
         </p>
 
         <form onsubmit="event.preventDefault(); const el=document.getElementById('passkeyInput'); submitPasskey(el ? el.value : '');" class="space-y-3.5">
