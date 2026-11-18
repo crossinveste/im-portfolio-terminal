@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IM Portfolio &amp; Attribution Frame (Live)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --background: #f8fafc;
+      --foreground: #0f172a;
+      --card: #ffffff;
+      --secondary: #f1f5f9;
+      --muted-foreground: #64748b;
+      --border: #e2e8f0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #090d16;
+        --foreground: #f1f5f9;
+        --card: #111827;
+        --secondary: #1e293b;
+        --muted-foreground: #94a3b8;
+        --border: #1f2937;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-4 md:p-6">
+  <div id="app"></div>
+  <script>
+const INITIAL_DATA = {"meta":{"title":"Investment Management \u2014 Portfolio & Attribution Terminal","as_of_date":"2026-11-16","locked_at":"2026-11-16 17:43 SGT","source":"Bloomberg Terminal Snapshot (Locked Mode)","version_id":"20261118-seed"},"macro":{"as_of_date":"2026-11-16","ye_date":"2025-12-31","ytd_days":320,"acwi_ytd":0.09609,"acwi_1d":-0.00372,"acwi_vol_ytd":12.1486,"acwi_sharpe_ytd":0.7428,"spx_ytd":0.104619,"spx_vol_ytd":13.9435,"spx_sharpe_ytd":0.6599,"spx_50dma":7667.0,"ndx_ytd":0.107,"djia_ytd":0.089},"vol":[{"name":"S&P 500 (VIX)","ticker":"VIX Index","last":19.3,"avg_1y":18.1},{"name":"Nikkei 225 (VNKY)","ticker":"VNKY Index","last":37.83,"avg_1y":31.98},{"name":"Hang Seng (VHSI)","ticker":"VHSI Index","last":19.56,"avg_1y":21.02},{"name":"Euro Stoxx 50 (V2X)","ticker":"V2X Index","last":17.11,"avg_1y":19.68},{"name":"KOSPI (VKOSPI)","ticker":"VKOSPI Index","last":52.53,"avg_1y":55.54}],"mandates":[{"id":"growth","name":"Growth","benchmark_desc":"100% MSCI ACWI (MXWD)","bbg_port_index":".GEPN Index","ytd":0.030972,"ytd_ex_fcn":0.027992,"ytd_ex_fcn_legacy":0.028288,"bm_ytd":0.09609,"d1":-0.001173,"w1":0.019347,"vol_ytd":10.289,"sharpe_ytd":0.1426,"positions":[{"name":"VANG FTSE HDY USDD","ref_name":"Vanguard High Yield","sector":"Global","ticker":"VHYL SW Equity","ac":"EQ: US","ccy":"CHF","w":0.0517,"d1":0.00141,"d5":0.03895,"hpr_usd":0.07352,"ytd_pos":0.2291,"c_ytd":0.0038,"vol":0.1231,"premarket":null},{"name":"ISHARES SWISS DIVIDEND CH","ref_name":"Swiss Dividend","sector":"Regional","ticker":"CHDVD SW Equity","ac":"EQ: EU","ccy":"CHF","w":0.05304,"d1":0.00287,"d5":0.02245,"hpr_usd":0.0984,"ytd_pos":0.2015,"c_ytd":0.00522,"vol":0.1572,"premarket":null},{"name":"ISHARES MSCI ACWI ETF (With option)","ref_name":"MSCI All Countries Index  (Option adjusted)","sector":"Global","ticker":"ACWI US Equity","ac":"EQ: US","ccy":"USD","w":0.20782,"d1":-0.00275,"d5":0.02448,"hpr_usd":0.01752,"ytd_pos":0.1103,"c_ytd":0.00364,"vol":0.143,"premarket":null},{"name":"SS SPDR S&P 500 ETF TRUST-US","ref_name":"SPX Index","sector":"Regional","ticker":"SPY US Equity","ac":"EQ: US","ccy":"USD","w":0.105,"d1":-0.00363,"d5":0.02595,"hpr_usd":0.05832,"ytd_pos":0.1149,"c_ytd":0.00612,"vol":0.2002,"premarket":null},{"name":"INVESCO NASDAQ 100 ETF","ref_name":"Nasdaq (QQQM)","sector":"Technology","ticker":"QQQM US Equity","ac":"EQ: US","ccy":"USD","w":0.0395,"d1":-0.01207,"d5":0.03608,"hpr_usd":-0.02289,"ytd_pos":0.1109,"c_ytd":-0.0009,"vol":0.2233,"premarket":null},{"name":"ALPHABET INC-CL C","ref_name":"Alphabet","sector":"Technology","ticker":"GOOG US Equity","ac":"EQ: US","ccy":"USD","w":0.01539,"d1":-0.00958,"d5":0.03025,"hpr_usd":-0.23805,"ytd_pos":-0.066,"c_ytd":-0.00366,"vol":0.3247,"premarket":null},{"name":"FIRST TRST NASD CL EDG SGIIF","ref_name":"GRID electrification","sector":"Electrification","ticker":"GRID US Equity","ac":"EQ: US","ccy":"USD","w":0.0257,"d1":-0.00682,"d5":0.03943,"hpr_usd":-0.17597,"ytd_pos":0.0544,"c_ytd":-0.00452,"vol":0.2089,"premarket":null},{"name":"ISHARES MSCI USA QUALITY FAC","ref_name":"US Quality","sector":"Regional","ticker":"QUAL US Equity","ac":"EQ: US","ccy":"USD","w":0.0539,"d1":-0.00053,"d5":0.0217,"hpr_usd":0.03678,"ytd_pos":0.135,"c_ytd":0.00198,"vol":0.1444,"premarket":null},{"name":"SCHWAB US DVD EQUITY ETF","ref_name":"US Dividend Equity","sector":"Regional","ticker":"SCHD US Equity","ac":"EQ: US","ccy":"USD","w":0.04065,"d1":0.00529,"d5":0.02701,"hpr_usd":0.00669,"ytd_pos":0.3492,"c_ytd":0.00027,"vol":0.1315,"premarket":null},{"name":"ISHARES U.S. HEALTHCARE PROV","ref_name":"US Healthcare","sector":"Healthcare","ticker":"IHF US Equity","ac":"EQ: US","ccy":"USD","w":0.03035,"d1":0.00017,"d5":0.01958,"hpr_usd":0.00232,"ytd_pos":0.2682,"c_ytd":7e-05,"vol":0.1874,"premarket":null},{"name":"INVESCO S&P 500 EQUAL WEIGHT","ref_name":"SP500 Equal Weight","sector":"Regional","ticker":"RSP US Equity","ac":"EQ: US","ccy":"USD","w":0.0407,"d1":0.00199,"d5":0.02365,"hpr_usd":0.00802,"ytd_pos":0.1682,"c_ytd":0.00033,"vol":0.1396,"premarket":null},{"name":"INVESCO STX 600 OPT BANKS","ref_name":"European Banks","sector":"Financials","ticker":"X7PS GR Equity","ac":"EQ: EU","ccy":"EUR","w":0.04609,"d1":0.00231,"d5":0.0439,"hpr_usd":-0.10725,"ytd_pos":0.1647,"c_ytd":-0.00494,"vol":0.2826,"premarket":null},{"name":"STATE STRT SPDR STRAITS TIME","ref_name":"Singapore Straits Times","sector":"Regional","ticker":"STTF SP Equity","ac":"EQ: EM/Asia","ccy":"SGD","w":0.0479,"d1":-0.00132,"d5":0.01411,"hpr_usd":-0.01114,"ytd_pos":0.1646,"c_ytd":-0.00053,"vol":0.1158,"premarket":null},{"name":"SPDR GOLD SHARES","ref_name":"SPDR GOLD SHARES","sector":"Equity","ticker":"GLD US Equity","ac":"Commodities","ccy":"USD","w":0.02395,"d1":0.00158,"d5":-0.04582,"hpr_usd":-0.23298,"ytd_pos":-0.1031,"c_ytd":-0.00558,"vol":0.1862,"premarket":null},{"name":"FCN Structured Notes Sleeve (FCN #1 + #2)","ref_name":"FCN Basket (SPX / NKY / SX5E)","sector":"Structured Notes","ticker":"FCN_GROWTH","ac":"FCN","ccy":"USD","w":0.1,"d1":0.0,"d5":0.0,"hpr_usd":0.0298,"ytd_pos":0.0298,"c_ytd":0.00298,"vol":0,"premarket":null},{"name":"Cash & Equivalents (USD)","ref_name":"Cash Reserve","sector":"Cash","ticker":"USD CASH","ac":"Cash","ccy":"USD","w":0.11831,"d1":0.0,"d5":0.0,"hpr_usd":0.03069,"ytd_pos":0.03069,"c_ytd":0.0067,"vol":0,"premarket":null}]},{"id":"balance","name":"Balanced","benchmark_desc":"50% MSCI ACWI / 50% Global FI","bbg_port_index":".CGMPN Index","ytd":0.029716,"ytd_ex_fcn":0.02924,"bm_ytd":0.046921,"d1":-0.000268,"w1":0.00824,"vol_ytd":5.8923,"sharpe_ytd":0.0801,"positions":[{"name":"ISHARES MSCI ACWI ETF (With option)","ref_name":"MSCI All Countries Index  (Option adjusted)","sector":"Global","ticker":"ACWI US Equity","ac":"EQ: US","ccy":"USD","w":0.09237,"d1":-0.00275,"d5":0.02448,"hpr_usd":0.0306,"ytd_pos":0.1103,"c_ytd":0.00283,"vol":0.143},{"name":"SS SPDR S&P 500 ETF TRUST-US","ref_name":"SPX Index","sector":"Regional","ticker":"SPY US Equity","ac":"EQ: US","ccy":"USD","w":0.04261,"d1":-0.00363,"d5":0.02595,"hpr_usd":0.0922,"ytd_pos":0.1149,"c_ytd":0.00393,"vol":0.2002},{"name":"ISHARES SWISS DIVIDEND CH","ref_name":"Swiss Dividend","sector":"Regional","ticker":"CHDVD SW Equity","ac":"EQ: EU","ccy":"CHF","w":0.02101,"d1":0.00287,"d5":0.02245,"hpr_usd":0.08691,"ytd_pos":0.2015,"c_ytd":0.00183,"vol":0.1572},{"name":"INVESCO NASDAQ 100 ETF","ref_name":"Nasdaq (QQQM)","sector":"Technology","ticker":"QQQM US Equity","ac":"EQ: US","ccy":"USD","w":0.02366,"d1":-0.01207,"d5":0.03608,"hpr_usd":-0.05851,"ytd_pos":0.1109,"c_ytd":-0.00138,"vol":0.2233},{"name":"SCHWAB US DVD EQUITY ETF","ref_name":"US Dividend Equity","sector":"Regional","ticker":"SCHD US Equity","ac":"EQ: US","ccy":"USD","w":0.02023,"d1":0.00529,"d5":0.02701,"hpr_usd":0.00669,"ytd_pos":0.00669,"c_ytd":0.00014,"vol":0.1315},{"name":"INVESCO S&P 500 EQUAL WEIGHT","ref_name":"SP500 Equal Weight","sector":"Regional","ticker":"RSP US Equity","ac":"EQ: US","ccy":"USD","w":0.03039,"d1":0.00199,"d5":0.02365,"hpr_usd":0.00802,"ytd_pos":0.00802,"c_ytd":0.00024,"vol":0.1396},{"name":"ISHARES MSCI USA QUALITY FAC","ref_name":"US Quality","sector":"Regional","ticker":"QUAL US Equity","ac":"EQ: US","ccy":"USD","w":0.03153,"d1":-0.00053,"d5":0.0217,"hpr_usd":0.03678,"ytd_pos":0.135,"c_ytd":0.00116,"vol":0.1444},{"name":"INVESCO STX 600 OPT BANKS","ref_name":"European Banks","sector":"Financials","ticker":"X7PS GR Equity","ac":"EQ: EU","ccy":"EUR","w":0.02772,"d1":0.00231,"d5":0.0439,"hpr_usd":-0.10133,"ytd_pos":0.1647,"c_ytd":-0.00281,"vol":0.2826},{"name":"VANG FTSE HDY USDD","ref_name":"Vanguard High Yield","sector":"Global","ticker":"VHYL SW Equity","ac":"EQ: US","ccy":"CHF","w":0.04133,"d1":0.00141,"d5":0.03895,"hpr_usd":0.07319,"ytd_pos":0.2291,"c_ytd":0.00302,"vol":0.1231},{"name":"STATE STRT SPDR STRAITS TIME","ref_name":"Singapore Straits Times","sector":"Regional","ticker":"STTF SP Equity","ac":"EQ: EM/Asia","ccy":"SGD","w":0.0332,"d1":-0.00132,"d5":0.01411,"hpr_usd":-0.01677,"ytd_pos":0.1646,"c_ytd":-0.00056,"vol":0.1158},{"name":"ISHARES ULTRA SHORT DURATION","ref_name":"iShares Ultra Short Duration IG ETF","sector":"Fixed Income IG","ticker":"ICSH US Equity","ac":"FI: IG","ccy":"USD","w":0.04859,"d1":0.0006,"d5":-0.0006,"hpr_usd":-0.00534,"ytd_pos":0.0293,"c_ytd":-0.00026,"vol":0.0047},{"name":"MAN FND PL-MAN DYN INC-ILB U","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MADIILU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.0382,"d1":0.0,"d5":-0.00245,"hpr_usd":0.01708,"ytd_pos":0.0494,"c_ytd":0.00065,"vol":0},{"name":"PIM EN SRT MA ES & BE-TR-USD","ref_name":"PIMCO ENHANCED SHORT MATURITY ETF","sector":"Fixed Income IG","ticker":"EMNT US Equity","ac":"FI: IG","ccy":"USD","w":0.04877,"d1":0.0001,"d5":0.00041,"hpr_usd":-0.00157,"ytd_pos":0.0336,"c_ytd":-8e-05,"vol":0.0084},{"name":"ISHARES FLOATING RATE BOND E","ref_name":"iShares Floating rate IG ETF","sector":"Fixed Income IG","ticker":"FLOT US Equity","ac":"FI: IG","ccy":"USD","w":0.0782,"d1":0.00059,"d5":0.00138,"hpr_usd":0.00059,"ytd_pos":0.0363,"c_ytd":5e-05,"vol":0.0179},{"name":"MAN GBL INVST GRDE OPPO-I US","ref_name":"Man Global IG Fund","sector":"Fixed Income IG","ticker":"MAIGOIU ID Equity","ac":"FI: IG","ccy":"USD","w":0.03873,"d1":0.0,"d5":-0.00904,"hpr_usd":0.0131,"ytd_pos":0.0131,"c_ytd":0.00051,"vol":0.0338},{"name":"ISHARES 1-3 YEAR TREASURY BO","ref_name":"US Treasury 1-3 year","sector":"Fixed Income IG","ticker":"SHY US equity","ac":"FI: IG","ccy":"USD","w":0.05054,"d1":0.00037,"d5":-0.00185,"hpr_usd":-0.01012,"ytd_pos":0.0096,"c_ytd":-0.00051,"vol":0.0194},{"name":"MAN FND PL-MAN DYN INC-I USD","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MGDYNIU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.06481,"d1":0.0,"d5":-0.00265,"hpr_usd":0.0516,"ytd_pos":0.0516,"c_ytd":0.00334,"vol":0.0288},{"name":"SPDR GOLD SHARES","ref_name":"SPDR GOLD SHARES","sector":"Commodities","ticker":"GLD US Equity","ac":"Commodities","ccy":"USD","w":0.02371,"d1":0.00158,"d5":-0.04582,"hpr_usd":-0.22738,"ytd_pos":-0.1031,"c_ytd":-0.00539,"vol":0.1862},{"name":"FCN Structured Note (FCN #3)","ref_name":"FCN #3 (SPX / NKY / SX5E, -50% KI)","sector":"Structured Notes","ticker":"FCN_BAL","ac":"FCN","ccy":"USD","w":0.1,"d1":0.0,"d5":0.0,"hpr_usd":0.00476,"ytd_pos":0.00476,"c_ytd":0.00048,"vol":0},{"name":"Cash & Equivalents (USD)","ref_name":"Cash Reserve","sector":"Cash","ticker":"USD CASH","ac":"Cash","ccy":"USD","w":0.1444,"d1":0.0,"d5":0.0,"hpr_usd":0.03682,"ytd_pos":0.03682,"c_ytd":0.0,"vol":0}]},{"id":"small_balance","name":"Small Balanced","benchmark_desc":"50% MSCI ACWI / 50% Global FI","bbg_port_index":".CGMPN Index","ytd":0.006341,"ytd_ex_fcn":0.005865,"bm_ytd":0.046921,"d1":-0.000533,"w1":0.007203,"vol_ytd":5.8923,"sharpe_ytd":0.0801,"positions":[{"name":"ISHARES MSCI ACWI ETF (With option)","ref_name":"MSCI All Countries Index  (Option adjusted)","sector":"Global","ticker":"ACWI US Equity","ac":"EQ: US","ccy":"USD","w":0.12493,"d1":-0.00275,"d5":0.02448,"hpr_usd":0.04955,"ytd_pos":0.1103,"c_ytd":0.00619,"vol":0.143},{"name":"SS SPDR S&P 500 ETF TRUST-US","ref_name":"SPX Index","sector":"Regional","ticker":"SPY US Equity","ac":"EQ: US","ccy":"USD","w":0.04432,"d1":-0.00363,"d5":0.02595,"hpr_usd":0.1182,"ytd_pos":0.1149,"c_ytd":0.00524,"vol":0.2002},{"name":"VANG FTSE HDY USDD","ref_name":"Vanguard High Yield","sector":"Global","ticker":"VHYL SW Equity","ac":"EQ: US","ccy":"CHF","w":0.0418,"d1":0.00141,"d5":0.03895,"hpr_usd":0.06227,"ytd_pos":0.2291,"c_ytd":0.00551,"vol":0.1231},{"name":"INVESCO NASDAQ 100 ETF","ref_name":"Nasdaq (QQQM)","sector":"Technology","ticker":"QQQM US Equity","ac":"EQ: US","ccy":"USD","w":0.01924,"d1":-0.01207,"d5":0.03608,"hpr_usd":-0.04379,"ytd_pos":0.1109,"c_ytd":-0.00084,"vol":0.2233},{"name":"INVESCO S&P 500 EQUAL WEIGHT","ref_name":"SP500 Equal Weight","sector":"Regional","ticker":"RSP US Equity","ac":"EQ: US","ccy":"USD","w":0.03982,"d1":0.00199,"d5":0.02365,"hpr_usd":0.00802,"ytd_pos":0.1682,"c_ytd":0.00032,"vol":0.1396},{"name":"ISHARES MSCI USA QUALITY FAC","ref_name":"US Quality","sector":"Regional","ticker":"QUAL US Equity","ac":"EQ: US","ccy":"USD","w":0.04223,"d1":-0.00053,"d5":0.0217,"hpr_usd":0.03678,"ytd_pos":0.135,"c_ytd":0.00155,"vol":0.1444},{"name":"STATE STRT SPDR STRAITS TIME","ref_name":"Singapore Straits Times","sector":"Regional","ticker":"STTF SP Equity","ac":"EQ: EM/Asia","ccy":"SGD","w":0.03966,"d1":-0.00132,"d5":0.01411,"hpr_usd":-0.00334,"ytd_pos":0.1646,"c_ytd":-0.00019,"vol":0.1158},{"name":"MAN FD PLC-MAN DYNM IN-I USD","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MANDIIU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.02892,"d1":0.0,"d5":-0.00068,"hpr_usd":0.0516,"ytd_pos":0,"c_ytd":0.00149,"vol":-0.0},{"name":"MAN GBL INVST GRDE OPPO-I US","ref_name":"Man Global IG Fund","sector":"Fixed Income IG","ticker":"MAIGOIU ID Equity","ac":"FI: IG","ccy":"USD","w":0.04018,"d1":0.0,"d5":-0.00849,"hpr_usd":0.0131,"ytd_pos":0,"c_ytd":0.00053,"vol":-0.0003},{"name":"ISHARES ULTRA SHORT DURATION","ref_name":"iShares Ultra Short Duration IG ETF","sector":"Fixed Income IG","ticker":"ICSH US Equity","ac":"FI: IG","ccy":"USD","w":0.04938,"d1":0.0006,"d5":-0.0006,"hpr_usd":-0.00534,"ytd_pos":0,"c_ytd":-0.00026,"vol":-0.0},{"name":"PIM EN SRT MA ES & BE-TR-USD","ref_name":"PIMCO ENHANCED SHORT MATURITY ETF","sector":"Fixed Income IG","ticker":"EMNT US Equity","ac":"FI: IG","ccy":"USD","w":0.04954,"d1":0.0001,"d5":0.00041,"hpr_usd":-0.00157,"ytd_pos":0,"c_ytd":-8e-05,"vol":0.0},{"name":"ISHARES FLOATING RATE BOND E","ref_name":"iShares Floating rate IG ETF","sector":"Fixed Income IG","ticker":"FLOT US Equity","ac":"FI: IG","ccy":"USD","w":0.07946,"d1":0.00059,"d5":0.00138,"hpr_usd":0.00059,"ytd_pos":0,"c_ytd":5e-05,"vol":0.0001},{"name":"ISHARES 1-3 YEAR TREASURY BO","ref_name":"US Treasury 1-3 year","sector":"Fixed Income IG","ticker":"SHY US Equity","ac":"FI: IG","ccy":"USD","w":0.05066,"d1":0.00037,"d5":-0.00564,"hpr_usd":-0.01012,"ytd_pos":0,"c_ytd":-0.00051,"vol":-0.0003},{"name":"MAN FND PL-MAN DYN INC-ILB U","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MADIILU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.04241,"d1":0.0,"d5":-0.00047,"hpr_usd":0.01708,"ytd_pos":0,"c_ytd":0.00072,"vol":-0.0},{"name":"MAN FND PL-MAN DYN INC-I USD","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MGDYNIU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.03134,"d1":0.0,"d5":-0.00069,"hpr_usd":0.0516,"ytd_pos":0,"c_ytd":0.00162,"vol":-0.0},{"name":"SPDR GOLD SHARES","ref_name":"SPDR GOLD SHARES","sector":"Commodities","ticker":"GLD US Equity","ac":"Commodities","ccy":"USD","w":0.02522,"d1":0.00158,"d5":-0.04582,"hpr_usd":-0.23391,"ytd_pos":-0.23391,"c_ytd":-0.0059,"vol":-0.0012},{"name":"FCN Structured Note (FCN #3)","ref_name":"FCN #3 (SPX / NKY / SX5E, -50% KI)","sector":"Structured Notes","ticker":"FCN_SBAL","ac":"FCN","ccy":"USD","w":0.1,"d1":0.0,"d5":0.0,"hpr_usd":0.00476,"ytd_pos":0.00476,"c_ytd":0.00048,"vol":0},{"name":"Cash & Equivalents (USD)","ref_name":"Cash Reserve","sector":"Cash","ticker":"USD CASH","ac":"Cash","ccy":"USD","w":0.15089,"d1":0.0,"d5":0.0,"hpr_usd":0.03682,"ytd_pos":0.03682,"c_ytd":0.0,"vol":0}]},{"id":"conservative","name":"Conservative","benchmark_desc":"30% Equity / 70% Fixed Income","bbg_port_index":".CONSN Index","ytd":0.010831,"ytd_ex_fcn":0.010831,"bm_ytd":0.027254,"d1":0.0,"w1":0.0,"vol_ytd":3.4041,"sharpe_ytd":-0.2781,"positions":[{"name":"NEUBERGER STRAT INC FD-I USD","ref_name":"Neuberger Berman Global Income IG Fund","sector":"Fixed Income IG","ticker":"NBUSIAC ID Equity","ac":"FI: IG","ccy":"USD","w":0.03587,"d1":0.0,"d5":0.0,"hpr_usd":-0.0176,"ytd_pos":-0.0176,"c_ytd":-0.00063,"vol":0.0545},{"name":"PIMCO GIS-INCOME FUND-INS AC","ref_name":"Pimco Global IG Fund","sector":"Fixed Income IG","ticker":"PIMINIA ID Equity","ac":"FI: IG","ccy":"USD","w":0.06269,"d1":0.0,"d5":0.0,"hpr_usd":-0.0175,"ytd_pos":-0.0175,"c_ytd":-0.0011,"vol":0.0503},{"name":"VONTBL TWNTYF STRT I-HI H","ref_name":"Vontobel Global IG Fund","sector":"Fixed Income IG","ticker":"VOTFHIU LX Equity","ac":"FI: IG","ccy":"USD","w":0.0511,"d1":0.0,"d5":0.0,"hpr_usd":0.007,"ytd_pos":0.007,"c_ytd":0.00036,"vol":0.0422},{"name":"JPMORGAN FDS-INCOME FD-C","ref_name":"JPMorgan US Income Fund","sector":"Fixed Income IG","ticker":"JPMINCC LX Equity","ac":"FI: IG","ccy":"USD","w":0.05838,"d1":0.0,"d5":0.0,"hpr_usd":0.0071,"ytd_pos":0.0071,"c_ytd":0.00042,"vol":0.0436},{"name":"MSIM GLOBAL FIXED INC OPP-Z","ref_name":"Morgan Stanley Global IG Fund","sector":"Fixed Income IG","ticker":"MSGFINZ LX Equity","ac":"FI: IG","ccy":"USD","w":0.10429,"d1":0.0,"d5":0.0,"hpr_usd":0.0051,"ytd_pos":0.0051,"c_ytd":0.00053,"vol":0.0353},{"name":"BGF-FIX INC GL OP-I2 USD","ref_name":"BlackRock Global IG Fund","sector":"Fixed Income IG","ticker":"BGFII2U LX Equity","ac":"FI: IG","ccy":"USD","w":0.04842,"d1":0.0,"d5":0.0,"hpr_usd":-0.0007,"ytd_pos":-0.0007,"c_ytd":-3e-05,"vol":0.038},{"name":"MAN FND PL-MAN DYN INC-I USD","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MGDYNIU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.09501,"d1":0.0,"d5":0.0,"hpr_usd":0.0516,"ytd_pos":0.0516,"c_ytd":0.0049,"vol":0.0288},{"name":"PRIN GL FIN UN EM FI-I3 USD","ref_name":"Principal Global HY Income Fund","sector":"Fixed Income HY","ticker":"PGFUEI3 ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.05194,"d1":0.0,"d5":0.0,"hpr_usd":0.0071,"ytd_pos":0.0071,"c_ytd":0.00037,"vol":0.0536},{"name":"CARMGN PTF EM DEBT-FHUSDA","ref_name":"CARMGN PTF EM DEBT-FHUSDA","sector":"FI: HY/EM","ticker":"CAPEDFH LX Equity","ac":"FI: HY/EM","ccy":"USD","w":0.04904,"d1":0.0,"d5":0.0,"hpr_usd":0.0,"ytd_pos":0,"c_ytd":0.0,"vol":0.0879,"warn":"Legacy #VALUE! date bug fixed"},{"name":"STE STR SPDR PT S&P 500 ETF","ref_name":"STE STR SPDR PT S&P 500 ETF","sector":"US Equity","ticker":"SPYM US Equity","ac":"EQ: US","ccy":"USD","w":0.05654,"d1":0.0,"d5":0.0,"hpr_usd":0.1154,"ytd_pos":0.1154,"c_ytd":0.00653,"vol":0.1472},{"name":"SPDR GOLD SHARES","ref_name":"SPDR GOLD SHARES","sector":"Commodities","ticker":"GLD US Equity","ac":"Commodities","ccy":"USD","w":0.05349,"d1":0.0,"d5":0.0,"hpr_usd":-0.1031,"ytd_pos":-0.1031,"c_ytd":-0.00551,"vol":0.1862},{"name":"Cash & Equivalents (USD)","ref_name":"Cash Reserve","sector":"Cash","ticker":"USD CASH","ac":"Cash","ccy":"USD","w":0.33323,"d1":0.0,"d5":0.0,"hpr_usd":0.0,"ytd_pos":0,"c_ytd":0.0,"vol":0}]},{"id":"income","name":"Income","benchmark_desc":"22% Global Agg + 54% Corp + 24% HY","bbg_port_index":".INCOMEN Index","ytd":0.011861,"ytd_ex_fcn":0.011861,"bm_ytd":-0.002247,"d1":0.000153,"w1":-0.001142,"vol_ytd":2.1062,"sharpe_ytd":-0.442,"positions":[{"name":"JPMORGAN FDS-INCOME FD-C","ref_name":"JPMorgan US Income Fund","sector":"Fixed Income IG","ticker":"JPMINCC LX Equity","ac":"FI: IG","ccy":"USD","w":0.0662,"d1":0.0,"d5":-0.00739,"hpr_usd":0.0071,"ytd_pos":0.0071,"c_ytd":0.00047,"vol":0.0436},{"name":"ISHARES ULTRA SHORT DURATION","ref_name":"iShares Ultra Short Duration IG ETF","sector":"Fixed Income IG","ticker":"ICSH US Equity","ac":"FI: IG","ccy":"USD","w":0.0825,"d1":0.0006,"d5":-0.0006,"hpr_usd":-0.00534,"ytd_pos":-0.00534,"c_ytd":-0.00044,"vol":0.0047},{"name":"PIM EN SRT MA ES & BE-TR-USD","ref_name":"PIMCO ENHANCED SHORT MATURITY ETF","sector":"Fixed Income IG","ticker":"EMNT US Equity","ac":"FI: IG","ccy":"USD","w":0.08281,"d1":0.0001,"d5":0.00041,"hpr_usd":-0.00157,"ytd_pos":-0.00157,"c_ytd":-0.00013,"vol":0.0084},{"name":"ISHARES FLOATING RATE BOND E","ref_name":"iShares Floating rate IG ETF","sector":"Fixed Income IG","ticker":"FLOT US Equity","ac":"FI: IG","ccy":"USD","w":0.13298,"d1":0.00059,"d5":0.00138,"hpr_usd":0.00059,"ytd_pos":0.00059,"c_ytd":8e-05,"vol":0.0179},{"name":"MAN GBL INVST GRDE OPPO-I US","ref_name":"Man Global IG Fund","sector":"Fixed Income IG","ticker":"MAIGOIU ID Equity","ac":"FI: IG","ccy":"USD","w":0.05023,"d1":0.0,"d5":-0.00849,"hpr_usd":0.0131,"ytd_pos":0.0131,"c_ytd":0.00066,"vol":0.0338},{"name":"ISHARES 1-3 YEAR TREASURY BO","ref_name":"US Treasury 1-3 year","sector":"Fixed Income IG","ticker":"SHY US Equity","ac":"FI: IG","ccy":"USD","w":0.04995,"d1":0.00037,"d5":-0.00564,"hpr_usd":-0.00928,"ytd_pos":-0.00928,"c_ytd":-0.00046,"vol":0.0194},{"name":"MAN FND PL-MAN DYN INC-ILB U","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MADIILU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.1271,"d1":0.0,"d5":-0.00047,"hpr_usd":0.01708,"ytd_pos":0.01708,"c_ytd":0.00217,"vol":0},{"name":"MAN FND PL-MAN DYN INC-I USD","ref_name":"Man Dynamic DM HY Income Fund","sector":"Fixed Income HY","ticker":"MGDYNIU ID Equity","ac":"FI: HY/EM","ccy":"USD","w":0.07649,"d1":0.0,"d5":-0.00069,"hpr_usd":0.0516,"ytd_pos":0.0516,"c_ytd":0.00395,"vol":0.0288},{"name":"Cash & Equivalents (USD)","ref_name":"Cash Reserve","sector":"Cash","ticker":"USD CASH","ac":"Cash","ccy":"USD","w":0.33172,"d1":0.0,"d5":0.0,"hpr_usd":0.0,"ytd_pos":0,"c_ytd":0.0,"vol":0}]}],"fcns":[{"id":"FCN-1","label":"FCN #1 \u2014 6M Autocall (Jul 26)","mandate":"Growth (5.0%)","issue_date":"2026-07-09","next_obs":"2027-01-09","days_to_obs":54,"maturity":"2027-07-13","port_weight":0.05,"days_held":130,"ki_barrier_pct":0.6,"ki_breach_chg":-0.4,"ko_barrier_pct":1.0,"coupon_ann":0.1507,"accrued_coupon":0.053674,"act_contrib":0.007535,"ytd_contrib":0.002684,"underlyings":[{"ticker":"SPX Index","name":"S&P 500","ref":7366.04,"last":7561.67,"chg":0.026558,"pct_ref":1.026558,"ki_buffer":0.426558},{"ticker":"NKY Index","name":"Nikkei 225","ref":69628.15,"last":60182.5,"chg":-0.135658,"pct_ref":0.864342,"ki_buffer":0.264342},{"ticker":"SX5E Index","name":"Euro Stoxx 50","ref":6264.1,"last":6386.86,"chg":0.019597,"pct_ref":1.019597,"ki_buffer":0.419597}]},{"id":"FCN-2","label":"FCN #2 \u2014 3M Obs Autocall (Oct 26)","mandate":"Growth (5.0%)","issue_date":"2026-10-29","next_obs":"2027-01-29","days_to_obs":74,"maturity":"2027-10-29","port_weight":0.05,"days_held":18,"ki_barrier_pct":0.6,"ki_breach_chg":-0.4,"ko_barrier_pct":1.0,"coupon_ann":0.12,"accrued_coupon":0.005918,"act_contrib":0.006,"ytd_contrib":0.000296,"underlyings":[{"ticker":"SPX Index","name":"S&P 500","ref":7723.61,"last":7561.67,"chg":-0.020967,"pct_ref":0.979033,"ki_buffer":0.379033},{"ticker":"NKY Index","name":"Nikkei 225","ref":65324.29,"last":60182.5,"chg":-0.078712,"pct_ref":0.921288,"ki_buffer":0.321288},{"ticker":"SX5E Index","name":"Euro Stoxx 50","ref":6146.25,"last":6386.86,"chg":0.039147,"pct_ref":1.039147,"ki_buffer":0.439147}]},{"id":"FCN-3","label":"FCN #3 \u2014 Deep KI -50% (Oct 26)","mandate":"Balanced & Small Bal (10.0%)","issue_date":"2026-10-29","next_obs":"2027-01-29","days_to_obs":74,"maturity":"2027-10-29","port_weight":0.1,"days_held":18,"ki_barrier_pct":0.5,"ki_breach_chg":-0.5,"ko_barrier_pct":1.0,"coupon_ann":0.0965,"accrued_coupon":0.004759,"act_contrib":0.00965,"ytd_contrib":0.000476,"underlyings":[{"ticker":"SPX Index","name":"S&P 500","ref":7687.31,"last":7561.67,"chg":-0.016344,"pct_ref":0.983656,"ki_buffer":0.483656},{"ticker":"NKY Index","name":"Nikkei 225","ref":64420.0,"last":60182.5,"chg":-0.065779,"pct_ref":0.934221,"ki_buffer":0.434221},{"ticker":"SX5E Index","name":"Euro Stoxx 50","ref":6147.0,"last":6386.86,"chg":0.039021,"pct_ref":1.039021,"ki_buffer":0.539021}]}],"top10":[{"name":"ALPHABET INC (Class A + C)","ticker":"GOOGL+GOOG US","country":"UNITED STATES","exposure":0.030702,"sources":[{"etf":"ACWI (GOOGL)","eff_weight":0.00351,"etf_pct":1.69},{"etf":"ACWI (GOOG)","eff_weight":0.002772,"etf_pct":1.33},{"etf":"SPY (GOOGL)","eff_weight":0.00281,"etf_pct":2.68},{"etf":"SPY (GOOG)","eff_weight":0.00225,"etf_pct":2.14},{"etf":"QQQM (GOOGL)","eff_weight":0.00113,"etf_pct":2.86},{"etf":"QQQM (GOOG)","eff_weight":0.001053,"etf_pct":2.66},{"etf":"GOOG (GOOG)","eff_weight":0.015393,"etf_pct":100.0},{"etf":"QUAL (GOOGL)","eff_weight":0.000904,"etf_pct":1.68},{"etf":"QUAL (GOOG)","eff_weight":0.00071,"etf_pct":1.32},{"etf":"RSP (GOOGL)","eff_weight":8.5e-05,"etf_pct":0.21},{"etf":"RSP (GOOG)","eff_weight":8.5e-05,"etf_pct":0.21}],"premarket":null,"d1":-0.009582,"d5":0.030254,"mtd":0.051398,"ytd":-0.066,"peak_to_today":-0.266941,"next_earnings":"4/2/2027","days_to_earnings":80,"post_earn_1d":-0.12293,"post_earn_10d":-0.117928,"since_last_earn":-0.091242},{"name":"APPLE INC","ticker":"AAPL US Equity","country":"UNITED STATES","exposure":0.026482,"sources":[{"etf":"ACWI (AAPL)","eff_weight":0.010643,"etf_pct":5.12},{"etf":"SPY (AAPL)","eff_weight":0.008302,"etf_pct":7.91},{"etf":"QQQM (AAPL)","eff_weight":0.003385,"etf_pct":8.57},{"etf":"QUAL (AAPL)","eff_weight":0.004067,"etf_pct":7.54},{"etf":"RSP (AAPL)","eff_weight":8.5e-05,"etf_pct":0.21}],"premarket":null,"d1":0.003917,"d5":0.040599,"mtd":0.033775,"ytd":0.3151,"peak_to_today":0.0,"next_earnings":"29/1/2027","days_to_earnings":74,"post_earn_1d":-0.018976,"post_earn_10d":0.048948,"since_last_earn":0.053056},{"name":"MICROSOFT CORP","ticker":"MSFT US Equity","country":"UNITED STATES","exposure":0.020625,"sources":[{"etf":"ACWI (MSFT)","eff_weight":0.007499,"etf_pct":3.61},{"etf":"SPY (MSFT)","eff_weight":0.006225,"etf_pct":5.93},{"etf":"QQQM (MSFT)","eff_weight":0.002533,"etf_pct":6.41},{"etf":"QUAL (MSFT)","eff_weight":0.004283,"etf_pct":7.95},{"etf":"RSP (MSFT)","eff_weight":8.5e-05,"etf_pct":0.21}],"premarket":null,"d1":0.001683,"d5":-0.012684,"mtd":0.003775,"ytd":0.0901,"peak_to_today":-0.057431,"next_earnings":"28/1/2027","days_to_earnings":73,"post_earn_1d":-0.001638,"post_earn_10d":-0.000753,"since_last_earn":-0.013427},{"name":"NVIDIA CORP","ticker":"NVDA US Equity","country":"UNITED STATES","exposure":0.019752,"sources":[{"etf":"ACWI (NVDA)","eff_weight":0.008145,"etf_pct":3.92},{"etf":"SPY (NVDA)","eff_weight":0.006447,"etf_pct":6.14},{"etf":"QQQM (NVDA)","eff_weight":0.002555,"etf_pct":6.47},{"etf":"QUAL (NVDA)","eff_weight":0.002519,"etf_pct":4.67},{"etf":"RSP (NVDA)","eff_weight":8.5e-05,"etf_pct":0.21}],"premarket":null,"d1":-0.020097,"d5":-0.127465,"mtd":-0.204212,"ytd":-0.1248,"peak_to_today":-0.319303,"next_earnings":"18/11/2026","days_to_earnings":2,"post_earn_1d":0.08738,"post_earn_10d":0.098731,"since_last_earn":-0.223266},{"name":"DBS GROUP HOLDINGS LTD","ticker":"DBS SP Equity","country":"SINGAPORE","exposure":0.013861,"sources":[{"etf":"STTF (DBS)","eff_weight":0.013861,"etf_pct":28.94}],"premarket":null,"d1":-0.002575,"d5":0.000574,"mtd":-0.046082,"ytd":0.3011,"peak_to_today":-0.113032,"next_earnings":"9/2/2027","days_to_earnings":85,"post_earn_1d":0.005934,"post_earn_10d":-0.012433,"since_last_earn":-0.014411},{"name":"AMAZON.COM INC","ticker":"AMZN US Equity","country":"UNITED STATES","exposure":0.01142,"sources":[{"etf":"ACWI (AMZN)","eff_weight":0.005255,"etf_pct":2.53},{"etf":"SPY (AMZN)","eff_weight":0.004208,"etf_pct":4.01},{"etf":"QQQM (AMZN)","eff_weight":0.001873,"etf_pct":4.74},{"etf":"RSP (AMZN)","eff_weight":8.5e-05,"etf_pct":0.21}],"premarket":null,"d1":-0.002917,"d5":0.028384,"mtd":0.109465,"ytd":0.1553,"peak_to_today":-0.061122,"next_earnings":"5/2/2027","days_to_earnings":81,"post_earn_1d":-0.014111,"post_earn_10d":0.06362,"since_last_earn":0.09381},{"name":"UNITEDHEALTH GROUP INC","ticker":"UNH US Equity","country":"UNITED STATES","exposure":0.01002,"sources":[{"etf":"VHYL (UNH)","eff_weight":0.000397,"etf_pct":0.77},{"etf":"ACWI (UNH)","eff_weight":0.000744,"etf_pct":0.36},{"etf":"SPY (UNH)","eff_weight":0.000583,"etf_pct":0.56},{"etf":"SCHD (UNH)","eff_weight":0.001593,"etf_pct":3.92},{"etf":"IHF (UNH)","eff_weight":0.006617,"etf_pct":21.8},{"etf":"RSP (UNH)","eff_weight":8.5e-05,"etf_pct":0.21}],"premarket":null,"d1":0.0012,"d5":0.0185,"mtd":0.024,"ytd":0.142,"peak_to_today":-0.048,"next_earnings":"16/1/2027","days_to_earnings":61,"post_earn_1d":-0.021,"post_earn_10d":0.015,"since_last_earn":0.038},{"name":"NOVARTIS AG-REG","ticker":"NOVN SW Equity","country":"SWITZERLAND","exposure":0.009328,"sources":[{"etf":"VHYL (NOVN)","eff_weight":0.000322,"etf_pct":0.62},{"etf":"CHDVD (NOVN)","eff_weight":0.008407,"etf_pct":15.85},{"etf":"ACWI (NOVN)","eff_weight":0.0006,"etf_pct":0.29}],"premarket":null,"d1":-0.001192,"d5":0.007364,"mtd":0.002093,"ytd":0.2603,"peak_to_today":-0.003123,"next_earnings":"3/2/2027","days_to_earnings":79,"post_earn_1d":0.003417,"post_earn_10d":0.03339,"since_last_earn":0.041},{"name":"ROCHE HOLDING AG","ticker":"ROP SW Equity","country":"SWITZERLAND","exposure":0.00931,"sources":[{"etf":"VHYL (ROP)","eff_weight":0.000353,"etf_pct":0.68},{"etf":"CHDVD (ROP)","eff_weight":0.008266,"etf_pct":15.58},{"etf":"ACWI (ROP)","eff_weight":0.000691,"etf_pct":0.33}],"premarket":null,"d1":-0.004428,"d5":0.036895,"mtd":0.003223,"ytd":0.2711,"peak_to_today":-0.004428,"next_earnings":"28/1/2027","days_to_earnings":73,"post_earn_1d":0.016023,"post_earn_10d":0.011731,"since_last_earn":0.15794},{"name":"OVERSEA-CHINESE BANKING CORP","ticker":"OCBC SP Equity","country":"SINGAPORE","exposure":0.009012,"sources":[{"etf":"STTF (OCBC)","eff_weight":0.009012,"etf_pct":18.81}],"premarket":null,"d1":0.003155,"d5":0.032816,"mtd":-0.022192,"ytd":0.5101,"peak_to_today":-0.112488,"next_earnings":"25/2/2027","days_to_earnings":101,"post_earn_1d":0.0,"post_earn_10d":0.041254,"since_last_earn":-0.054785}],"constituents":[{"n":"APPLE INC","t":"AAPL US Equity","c":"UNITED STATES","w":0.026482,"s":[["ACWI",1.064,5.12],["SPY",0.83,7.91],["QQQM",0.339,8.57],["QUAL",0.407,7.54],["RSP",0.009,0.21]]},{"n":"ALPHABET INC-CL C","t":"GOOG US Equity","c":"UNITED STATES","w":0.022263,"s":[["ACWI",0.277,1.33],["SPY",0.225,2.14],["QQQM",0.105,2.66],["GOOG",1.539,100.0],["QUAL",0.071,1.32],["RSP",0.009,0.21]]},{"n":"MICROSOFT CORP","t":"MSFT US Equity","c":"UNITED STATES","w":0.020625,"s":[["ACWI",0.75,3.61],["SPY",0.623,5.93],["QQQM",0.253,6.41],["QUAL",0.428,7.95],["RSP",0.009,0.21]]},{"n":"NVIDIA CORP","t":"NVDA US Equity","c":"UNITED STATES","w":0.019752,"s":[["ACWI",0.814,3.92],["SPY",0.645,6.14],["QQQM",0.256,6.47],["QUAL",0.252,4.67],["RSP",0.009,0.21]]},{"n":"DBS GROUP HOLDINGS LTD","t":"DBS SP Equity","c":"SINGAPORE","w":0.013861,"s":[["STTF",1.386,28.94]]},{"n":"AMAZON.COM INC","t":"AMZN US Equity","c":"UNITED STATES","w":0.01142,"s":[["ACWI",0.525,2.53],["SPY",0.421,4.01],["QQQM",0.187,4.74],["RSP",0.009,0.21]]},{"n":"UNITEDHEALTH GROUP INC","t":"UNH US Equity","c":"UNITED STATES","w":0.01002,"s":[["VHYL",0.04,0.77],["ACWI",0.074,0.36],["SPY",0.058,0.56],["SCHD",0.159,3.92],["IHF",0.662,21.8],["RSP",0.009,0.21]]},{"n":"NOVARTIS AG-REG","t":"NOVN SW Equity","c":"SWITZERLAND","w":0.009328,"s":[["VHYL",0.032,0.62],["CHDVD",0.841,15.85],["ACWI",0.06,0.29]]},{"n":"ROCHE HOLDING AG","t":"ROP SW Equity","c":"SWITZERLAND","w":0.00931,"s":[["VHYL",0.035,0.68],["CHDVD",0.827,15.58],["ACWI",0.069,0.33]]},{"n":"OVERSEA-CHINESE BANKING CORP","t":"OCBC SP Equity","c":"SINGAPORE","w":0.009012,"s":[["STTF",0.901,18.81]]},{"n":"META PLATFORMS INC-CLASS A","t":"META US Equity","c":"UNITED STATES","w":0.008603,"s":[["ACWI",0.282,1.35],["SPY",0.22,2.1],["QQQM",0.124,3.15],["QUAL",0.226,4.18],["RSP",0.009,0.21]]},{"n":"ALPHABET INC-CL A","t":"GOOGL US Equity","c":"UNITED STATES","w":0.008439,"s":[["ACWI",0.351,1.69],["SPY",0.281,2.68],["QQQM",0.113,2.86],["QUAL",0.09,1.68],["RSP",0.009,0.21]]},{"n":"NESTLE SA-REG","t":"NESN SW Equity","c":"SWITZERLAND","w":0.008106,"s":[["VHYL",0.028,0.54],["CHDVD",0.782,14.75]]},{"n":"ZURICH INSURANCE GROUP AG","t":"ZURN SW Equity","c":"SWITZERLAND","w":0.007814,"s":[["CHDVD",0.781,14.73]]},{"n":"BROADCOM INC","t":"AVGO US Equity","c":"UNITED STATES","w":0.007121,"s":[["ACWI",0.318,1.53],["SPY",0.278,2.65],["QQQM",0.107,2.72],["RSP",0.009,0.21]]},{"n":"ELI LILLY & CO","t":"LLY US Equity","c":"UNITED STATES","w":0.006706,"s":[["ACWI",0.235,1.13],["SPY",0.183,1.74],["QUAL",0.244,4.53],["RSP",0.009,0.21]]},{"n":"TESLA INC","t":"TSLA US Equity","c":"UNITED STATES","w":0.006098,"s":[["ACWI",0.228,1.1],["SPY",0.18,1.71],["QQQM",0.133,3.38],["GRID",0.06,2.34],["RSP",0.009,0.21]]},{"n":"SWISS RE AG","t":"SREN SW Equity","c":"SWITZERLAND","w":0.005316,"s":[["CHDVD",0.532,10.02]]},{"n":"ADVANCED MICRO DEVICES","t":"AMD US Equity","c":"UNITED STATES","w":0.005024,"s":[["ACWI",0.184,0.89],["SPY",0.153,1.46],["QQQM",0.157,3.97],["RSP",0.009,0.21]]},{"n":"MICRON TECHNOLOGY INC","t":"MU US Equity","c":"UNITED STATES","w":0.004981,"s":[["ACWI",0.187,0.9],["SPY",0.145,1.38],["QQQM",0.158,4.0],["RSP",0.009,0.21]]},{"n":"HOLCIM LTD","t":"HOLN SW Equity","c":"SWITZERLAND","w":0.004809,"s":[["CHDVD",0.481,9.07]]},{"n":"EXXONMOBIL HOLDINGS CORP","t":"XOM US Equity","c":"UNITED STATES","w":0.004679,"s":[["VHYL",0.08,1.55],["ACWI",0.141,0.68],["SPY",0.112,1.07],["QUAL",0.126,2.34],["RSP",0.009,0.21]]},{"n":"BERKSHIRE HATHAWAY INC-CL B","t":"BRK/B US Equity","c":"UNITED STATES","w":0.004671,"s":[["ACWI",0.169,0.81],["SPY",0.176,1.68],["QUAL",0.113,2.11],["RSP",0.009,0.21]]},{"n":"VISA INC-CLASS A SHARES","t":"V US Equity","c":"UNITED STATES","w":0.004626,"s":[["ACWI",0.144,0.69],["SPY",0.115,1.09],["QUAL",0.195,3.62],["RSP",0.009,0.21]]},{"n":"HSBC HOLDINGS PLC","t":"HSBA LN Equity","c":"BRITAIN","w":0.004542,"s":[["VHYL",0.041,0.79],["ACWI",0.063,0.3],["X7PS",0.35,7.59]]},{"n":"JOHNSON & JOHNSON","t":"JNJ US Equity","c":"UNITED STATES","w":0.00454,"s":[["VHYL",0.076,1.48],["ACWI",0.138,0.66],["SPY",0.11,1.04],["QUAL",0.122,2.26],["RSP",0.009,0.21]]},{"n":"BANCO SANTANDER SA","t":"SAN SM Equity","c":"SPAIN","w":0.004491,"s":[["VHYL",0.024,0.47],["X7PS",0.425,9.22]]},{"n":"JPMORGAN CHASE & CO","t":"JPM US Equity","c":"UNITED STATES","w":0.004468,"s":[["VHYL",0.106,2.05],["ACWI",0.186,0.9],["SPY",0.146,1.39],["RSP",0.009,0.21]]},{"n":"UNITED OVERSEAS BANK LTD","t":"UOB SP Equity","c":"SINGAPORE","w":0.004456,"s":[["STTF",0.446,9.3]]},{"n":"CISCO SYSTEMS INC","t":"CSCO US Equity","c":"UNITED STATES","w":0.004281,"s":[["VHYL",0.051,0.98],["ACWI",0.081,0.39],["SPY",0.064,0.61],["QQQM",0.068,1.72],["SCHD",0.155,3.82],["RSP",0.009,0.21]]},{"n":"PROCTER & GAMBLE CO/THE","t":"PG US Equity","c":"UNITED STATES","w":0.004221,"s":[["VHYL",0.041,0.79],["ACWI",0.079,0.38],["SPY",0.063,0.6],["QUAL",0.051,0.95],["SCHD",0.18,4.43],["RSP",0.009,0.21]]},{"n":"COCA-COLA CO/THE","t":"KO US Equity","c":"UNITED STATES","w":0.004109,"s":[["VHYL",0.04,0.77],["ACWI",0.077,0.37],["SPY",0.06,0.58],["QUAL",0.049,0.9],["SCHD",0.176,4.33],["RSP",0.009,0.21]]},{"n":"ABBVIE INC","t":"ABBV US Equity","c":"UNITED STATES","w":0.00406,"s":[["VHYL",0.056,1.07],["ACWI",0.106,0.51],["SPY",0.083,0.79],["SCHD",0.152,3.75],["RSP",0.009,0.21]]},{"n":"MERCK & CO. INC.","t":"MRK US Equity","c":"UNITED STATES","w":0.003968,"s":[["VHYL",0.043,0.83],["ACWI",0.074,0.36],["SPY",0.058,0.55],["QUAL",0.075,1.39],["SCHD",0.138,3.4],["RSP",0.009,0.21]]},{"n":"WALMART INC","t":"WMT US Equity","c":"UNITED STATES","w":0.003828,"s":[["ACWI",0.112,0.54],["SPY",0.09,0.86],["QQQM",0.112,2.83],["QUAL",0.06,1.12],["RSP",0.009,0.21]]},{"n":"TEXAS INSTRUMENTS INC","t":"TXN US Equity","c":"UNITED STATES","w":0.003785,"s":[["VHYL",0.031,0.59],["ACWI",0.057,0.28],["SPY",0.046,0.44],["QQQM",0.05,1.26],["SCHD",0.187,4.59],["RSP",0.009,0.21]]},{"n":"TAIWAN SEMICONDUCTOR MANUFAC","t":"2330 TT Equity","c":"TAIWAN","w":0.003671,"s":[["ACWI",0.367,1.77]]},{"n":"CHEVRON CORP","t":"CVX US Equity","c":"UNITED STATES","w":0.003654,"s":[["VHYL",0.045,0.88],["ACWI",0.08,0.39],["SPY",0.069,0.65],["SCHD",0.163,4.0],["RSP",0.009,0.21]]},{"n":"CVS HEALTH CORP","t":"CVS US Equity","c":"UNITED STATES","w":0.003521,"s":[["IHF",0.352,11.6]]},{"n":"BANCO BILBAO VIZCAYA ARGENTA","t":"BBVA SM Equity","c":"SPAIN","w":0.003423,"s":[["X7PS",0.342,7.43]]},{"n":"MASTERCARD INC - A","t":"MA US Equity","c":"UNITED STATES","w":0.003419,"s":[["ACWI",0.109,0.52],["SPY",0.085,0.81],["QUAL",0.14,2.59],["RSP",0.009,0.21]]},{"n":"COSTCO WHOLESALE CORP","t":"COST US Equity","c":"UNITED STATES","w":0.003407,"s":[["ACWI",0.098,0.47],["SPY",0.078,0.74],["QQQM",0.088,2.23],["QUAL",0.068,1.27],["RSP",0.009,0.21]]},{"n":"HOME DEPOT INC","t":"HD US Equity","c":"UNITED STATES","w":0.003403,"s":[["VHYL",0.034,0.66],["ACWI",0.071,0.34],["SPY",0.056,0.53],["SCHD",0.171,4.21],["RSP",0.009,0.21]]},{"n":"UNICREDIT SPA","t":"UCG IM Equity","c":"ITALY","w":0.003227,"s":[["X7PS",0.323,7.0]]},{"n":"LAM RESEARCH CORP","t":"LRCX US Equity","c":"UNITED STATES","w":0.003093,"s":[["ACWI",0.06,0.29],["SPY",0.047,0.45],["QQQM",0.051,1.29],["QUAL",0.143,2.65],["RSP",0.009,0.21]]},{"n":"SWISS LIFE HOLDING AG-REG","t":"SLHN SW Equity","c":"SWITZERLAND","w":0.002986,"s":[["CHDVD",0.299,5.63]]},{"n":"SINGAPORE TELECOMMUNICATIONS","t":"ST SP Equity","c":"SINGAPORE","w":0.002967,"s":[["STTF",0.297,6.19]]},{"n":"APPLIED MATERIALS INC","t":"AMAT US Equity","c":"UNITED STATES","w":0.002941,"s":[["ACWI",0.064,0.31],["SPY",0.048,0.46],["QQQM",0.053,1.34],["QUAL",0.12,2.23],["RSP",0.009,0.21]]},{"n":"ELEVANCE HEALTH INC","t":"ELV US Equity","c":"UNITED STATES","w":0.002929,"s":[["IHF",0.293,9.65]]},{"n":"AMGEN INC","t":"AMGN US Equity","c":"UNITED STATES","w":0.002862,"s":[["VHYL",0.027,0.53],["SPY",0.04,0.39],["QQQM",0.045,1.15],["SCHD",0.165,4.05],["RSP",0.009,0.21]]},{"n":"INTESA SANPAOLO","t":"ISP IM Equity","c":"ITALY","w":0.002672,"s":[["X7PS",0.267,5.8]]},{"n":"BNP PARIBAS","t":"BNP FP Equity","c":"FRANCE","w":0.002602,"s":[["X7PS",0.26,5.65]]},{"n":"SAMSUNG ELECTRONICS CO LTD","t":"005930 KS Equity","c":"SOUTH KOREA","w":0.002594,"s":[["VHYL",0.11,2.12],["ACWI",0.15,0.72]]},{"n":"ING GROEP NV","t":"INGA NA Equity","c":"NETHERLANDS","w":0.002285,"s":[["X7PS",0.228,4.96]]},{"n":"QUANTA SERVICES INC","t":"PWR US Equity","c":"UNITED STATES","w":0.002252,"s":[["GRID",0.225,8.76]]},{"n":"JOHNSON CONTROLS INTERNATION","t":"JCI US Equity","c":"IRELAND","w":0.002218,"s":[["GRID",0.222,8.63]]},{"n":"PEPSICO INC","t":"PEP US Equity","c":"UNITED STATES","w":0.002186,"s":[["VHYL",0.021,0.4],["QQQM",0.036,0.9],["SCHD",0.162,3.99]]},{"n":"PALANTIR TECHNOLOGIES INC-A","t":"PLTR US Equity","c":"UNITED STATES","w":0.002179,"s":[["ACWI",0.077,0.37],["SPY",0.063,0.6],["QQQM",0.069,1.76],["RSP",0.009,0.21]]},{"n":"QUALCOMM INC","t":"QCOM US Equity","c":"UNITED STATES","w":0.002147,"s":[["VHYL",0.023,0.45],["QQQM",0.033,0.82],["SCHD",0.159,3.91]]},{"n":"SCHNEIDER ELECTRIC SE","t":"SU FP Equity","c":"FRANCE","w":0.001997,"s":[["VHYL",0.022,0.42],["GRID",0.178,6.93]]},{"n":"EATON CORP PLC","t":"ETN US Equity","c":"UNITED STATES","w":0.001995,"s":[["GRID",0.199,7.76]]},{"n":"LOCKHEED MARTIN CORP","t":"LMT US Equity","c":"UNITED STATES","w":0.001962,"s":[["QUAL",0.052,0.96],["SCHD",0.144,3.55]]},{"n":"GIVAUDAN-REG","t":"GIVN SW Equity","c":"SWITZERLAND","w":0.001941,"s":[["CHDVD",0.194,3.66]]},{"n":"ABB LTD-REG","t":"ABBN SW Equity","c":"SWITZERLAND","w":0.001935,"s":[["GRID",0.194,7.53]]},{"n":"SIKA AG-REG","t":"SIKA SW Equity","c":"SWITZERLAND","w":0.001918,"s":[["CHDVD",0.192,3.62]]},{"n":"BARCLAYS PLC","t":"BARC LN Equity","c":"BRITAIN","w":0.001917,"s":[["X7PS",0.192,4.16]]},{"n":"TJX COMPANIES INC","t":"TJX US Equity","c":"UNITED STATES","w":0.001802,"s":[["QUAL",0.18,3.34]]},{"n":"NETFLIX INC","t":"NFLX US Equity","c":"UNITED STATES","w":0.001757,"s":[["SPY",0.042,0.4],["QQQM",0.047,1.18],["QUAL",0.079,1.46],["RSP",0.009,0.21]]},{"n":"BLACKROCK INC","t":"BLK US Equity","c":"UNITED STATES","w":0.001737,"s":[["VHYL",0.019,0.38],["QUAL",0.028,0.52],["SCHD",0.126,3.1]]},{"n":"VERIZON COMMUNICATIONS INC","t":"VZ US Equity","c":"UNITED STATES","w":0.001713,"s":[["VHYL",0.023,0.44],["SCHD",0.148,3.65]]},{"n":"BANK OF AMERICA CORP","t":"BAC US Equity","c":"UNITED STATES","w":0.001706,"s":[["VHYL",0.042,0.82],["ACWI",0.067,0.32],["SPY",0.053,0.5],["RSP",0.009,0.21]]},{"n":"DEUTSCHE BANK AG-REGISTERED","t":"DBK GR Equity","c":"GERMANY","w":0.0017,"s":[["X7PS",0.17,3.69]]},{"n":"INTEL CORP","t":"INTC US Equity","c":"UNITED STATES","w":0.001698,"s":[["ACWI",0.056,0.27],["SPY",0.049,0.46],["QQQM",0.056,1.43],["RSP",0.009,0.21]]},{"n":"LLOYDS BANKING GROUP PLC","t":"LLOY LN Equity","c":"BRITAIN","w":0.001651,"s":[["X7PS",0.165,3.58]]},{"n":"SINGAPORE EXCHANGE LTD","t":"SGX SP Equity","c":"SINGAPORE","w":0.00165,"s":[["STTF",0.165,3.45]]}],"missing_etfs":[{"ticker":"RSP US Equity","name":"INVESCO S&P 500 EQUAL WEIGHT","weight":0.040699,"purchased":"2026-11-05"},{"ticker":"SCHD US Equity","name":"SCHWAB US DVD EQUITY ETF","weight":0.040645,"purchased":"2026-11-05"},{"ticker":"IHF US Equity","name":"ISHARES U.S. HEALTHCARE PROV","weight":0.030352,"purchased":"2026-11-05"},{"ticker":"GRID US Equity","name":"FIRST TRST NASD CL EDG SGIIF","weight":0.025703,"purchased":"2026-06-18"}],"geo":[{"country":"UNITED STATES","region":"North America","port_exposure":0.305235,"acwi_exposure":0.634044,"active_weight":-0.328809},{"country":"SWITZERLAND","region":"Europe","port_exposure":0.057591,"acwi_exposure":0.022049,"active_weight":0.035542},{"country":"SINGAPORE","region":"Asia","port_exposure":0.043675,"acwi_exposure":0.004106,"active_weight":0.039569},{"country":"BRITAIN","region":"Europe","port_exposure":0.013959,"acwi_exposure":0.029541,"active_weight":-0.015582},{"country":"SPAIN","region":"Europe","port_exposure":0.00989,"acwi_exposure":0.007879,"active_weight":0.002011},{"country":"ITALY","region":"Europe","port_exposure":0.008961,"acwi_exposure":0.006445,"active_weight":0.002516},{"country":"FRANCE","region":"Europe","port_exposure":0.006583,"acwi_exposure":0.017156,"active_weight":-0.010573},{"country":"NETHERLANDS","region":"Europe","port_exposure":0.00449,"acwi_exposure":0.014151,"active_weight":-0.009661},{"country":"IRELAND","region":"Europe","port_exposure":0.004301,"acwi_exposure":0.008144,"active_weight":-0.003843},{"country":"TAIWAN","region":"Asia","port_exposure":0.003943,"acwi_exposure":0.034863,"active_weight":-0.03092},{"country":"GERMANY","region":"Europe","port_exposure":0.003803,"acwi_exposure":0.017715,"active_weight":-0.013912},{"country":"SOUTH KOREA","region":"Asia","port_exposure":0.003698,"acwi_exposure":0.026091,"active_weight":-0.022393},{"country":"HONG KONG","region":"Asia","port_exposure":0.002541,"acwi_exposure":0.00712,"active_weight":-0.004579},{"country":"SWEDEN","region":"Europe","port_exposure":0.001724,"acwi_exposure":0.006939,"active_weight":-0.005215},{"country":"CHINA","region":"Asia","port_exposure":0.001715,"acwi_exposure":0.01942,"active_weight":-0.017705},{"country":"FINLAND","region":"Europe","port_exposure":0.001477,"acwi_exposure":0.002444,"active_weight":-0.000967},{"country":"CANADA","region":"North America","port_exposure":0.001456,"acwi_exposure":0.028915,"active_weight":-0.027459},{"country":"AUSTRIA","region":"Europe","port_exposure":0.001347,"acwi_exposure":0.0,"active_weight":0.001347},{"country":"POLAND","region":"Europe","port_exposure":0.001099,"acwi_exposure":0.001278,"active_weight":-0.000179},{"country":"JAPAN","region":"Asia","port_exposure":0.00074,"acwi_exposure":0.051967,"active_weight":-0.051227},{"country":"BELGIUM","region":"Europe","port_exposure":0.000709,"acwi_exposure":0.002226,"active_weight":-0.001517},{"country":"DENMARK","region":"Europe","port_exposure":0.000627,"acwi_exposure":0.003181,"active_weight":-0.002554},{"country":"AUSTRALIA","region":"Asia","port_exposure":0.000468,"acwi_exposure":0.013635,"active_weight":-0.013167},{"country":"NORWAY","region":"Europe","port_exposure":0.000417,"acwi_exposure":0.001303,"active_weight":-0.000886},{"country":"THAILAND","region":"Asia","port_exposure":0.0003,"acwi_exposure":0.0,"active_weight":0.0003},{"country":"PORTUGAL","region":"Europe","port_exposure":0.000263,"acwi_exposure":0.0,"active_weight":0.000263},{"country":"LUXEMBOURG","region":"Others","port_exposure":0.000106,"acwi_exposure":0.0,"active_weight":0.000106},{"country":"SOUTH AFRICA","region":"Others","port_exposure":0.000102,"acwi_exposure":0.002809,"active_weight":-0.002707},{"country":"ISRAEL","region":"Others","port_exposure":0.0,"acwi_exposure":0.002424,"active_weight":-0.002424},{"country":"SAUDI ARABIA","region":"Others","port_exposure":0.0,"acwi_exposure":0.002713,"active_weight":-0.002713},{"country":"BRAZIL","region":"Others","port_exposure":0.0,"acwi_exposure":0.004845,"active_weight":-0.004845},{"country":"INDIA","region":"Asia","port_exposure":0.0,"acwi_exposure":0.012639,"active_weight":-0.012639}],"regions":[{"region":"North America","port":0.306691,"acwi":0.662959},{"region":"Asia-Pacific","port":0.05708,"acwi":0.169841},{"region":"Europe","port":0.117241,"acwi":0.139173},{"region":"EM / Rest of World","port":0.000208,"acwi":0.01748}]};
+
+const GH_CONFIG = {
+  owner: 'crossinveste',
+  repo: 'im-portfolio-terminal',
+  branch: 'gh-pages',
+  path: 'data/snapshot.json',
+  liveUrl: 'https://crossinveste.github.io/im-portfolio-terminal/',
+  pollMs: 10000
+};
+
+const TOKEN_STORAGE_KEY = 'im_gh_pub_token_crossinveste_v1';
+
+function getSavedToken() {
+  try { return localStorage.getItem(TOKEN_STORAGE_KEY) || ''; } catch (_) { return ''; }
+}
+function setSavedToken(tok) {
+  try {
+    if (tok) localStorage.setItem(TOKEN_STORAGE_KEY, tok.trim());
+    else localStorage.removeItem(TOKEN_STORAGE_KEY);
+  } catch (_) {}
+}
+
+function sgtNowStr() {
+  try {
+    return new Intl.DateTimeFormat('sv-SE', {
+      timeZone: 'Asia/Singapore',
+      year: 'numeric', month: '2-digit', day: '2-digit',
+      hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+    }).format(new Date()) + ' SGT';
+  } catch (_) {
+    return new Date().toISOString().slice(0, 19).replace('T', ' ') + ' UTC';
+  }
+}
+
+function utf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) {
+    bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  }
+  return btoa(bin);
+}
+
+function base64ToUtf8(b64) {
+  const clean = String(b64 || '').replace(/\s+/g, '');
+  const bin = atob(clean);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder('utf-8').decode(bytes);
+}
+
+const STATE = {
+  data: JSON.parse(JSON.stringify(INITIAL_DATA)),
+  locked: true,
+  activeTab: 'overview',
+  selectedMandate: 'growth',
+  posSearch: '',
+  posAcFilter: 'ALL',
+  posSortCol: 'w',
+  posSortDir: 'desc',
+  trades: {},
+  ltSearch: '',
+  expandedLt: 'ALPHABET INC (Class A + C)',
+  fcnShockSpx: 0,
+  fcnShockNky: 0,
+  fcnShockSx5e: 0,
+  syncModalOpen: false,
+  syncStatus: '',
+  syncTone: 'info',
+  pendingPublish: false,
+  showTokenHelp: false,
+  cloudStatus: 'connecting',
+  lastSha: '',
+  lastEtag: '',
+  lastChecked: '',
+  liveToast: ''
+};
+
+const hasNum = (v) => v !== null && v !== undefined && v !== '' && !Number.isNaN(Number(v));
+
+const parseOptPct = (v) => {
+  if (v === null || v === undefined || v === '') return null;
+  if (typeof v === 'number') return Number.isNaN(v) ? null : v;
+  const s = String(v).trim();
+  if (!s || s === '—' || s === '-') return null;
+  if (s.endsWith('%')) {
+    const n = parseFloat(s.slice(0, -1));
+    return Number.isNaN(n) ? null : n / 100.0;
+  }
+  const n = parseFloat(s);
+  return Number.isNaN(n) ? null : n;
+};
+
+const fmtPct = (v, dec = 2, signed = false) => {
+  if (!hasNum(v)) return '—';
+  const n = Number(v) * 100;
+  const s = n.toFixed(dec) + '%';
+  return (signed && n > 0) ? '+' + s : s;
+};
+const fmtBps = (v) => {
+  if (!hasNum(v)) return '—';
+  const bps = Math.round(Number(v) * 10000);
+  return (bps > 0 ? '+' : '') + bps + ' bps';
+};
+const fmtNum = (v, dec = 2) => {
+  if (!hasNum(v)) return '—';
+  return Number(v).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+};
+const colorCls = (v) => {
+  if (!hasNum(v) || Number(v) === 0) return 'text-[var(--muted-foreground)]';
+  return Number(v) > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400';
+};
+const escHtml = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function normIssuerKey(raw) {
+  return String(raw || '').trim()
+    .replace(/\s*\(Class A \+ C\)$/i, '')
+    .replace(/-CL [ABC]$/i, '')
+    .replace(/-CLASS [ABC]$/i, '')
+    .replace(/-NY REG SHS$/i, '')
+    .replace(/-PREF$/i, ' CO LTD')
+    .trim();
+}
+
+const AC_ORDER = ['EQ: US', 'EQ: EU', 'EQ: EM/Asia', 'FI: IG', 'FI: HY/EM', 'Commodities', 'FCN', 'Cash'];
+const AC_COLORS = {
+  'EQ: US': '#2563eb',
+  'EQ: EU': '#6366f1',
+  'EQ: EM/Asia': '#0ea5e9',
+  'FI: IG': '#10b981',
+  'FI: HY/EM': '#14b8a6',
+  'Commodities': '#f59e0b',
+  'FCN': '#8b5cf6',
+  'Cash': '#64748b'
+};
+
+function computeMandateAlloc(mandate, includeTrades = false) {
+  const map = {};
+  AC_ORDER.forEach(k => map[k] = 0);
+  mandate.positions.forEach((p, idx) => {
+    const ac = AC_ORDER.includes(p.ac) ? p.ac : 'Cash';
+    const tr = includeTrades ? (STATE.trades[mandate.id + ':' + idx] || 0) : 0;
+    map[ac] += (Number(p.w) || 0) + tr;
+  });
+  return map;
+}
+
+function setTab(t) { STATE.activeTab = t; render(); }
+function selectMandate(mId, jump = false) { STATE.selectedMandate = mId; if (jump) STATE.activeTab = 'positions'; render(); }
+function toggleLock() { STATE.locked = !STATE.locked; render(); }
+function resetSandbox() { STATE.trades = {}; STATE.fcnShockSpx = 0; STATE.fcnShockNky = 0; STATE.fcnShockSx5e = 0; STATE.locked = true; render(); }
+function updateTrade(key, pctVal) {
+  if (STATE.locked) return;
+  const v = parseFloat(pctVal);
+  STATE.trades[key] = Number.isNaN(v) ? 0 : (v / 100.0);
+  render();
+}
+function sortPositions(col) {
+  if (STATE.posSortCol === col) STATE.posSortDir = STATE.posSortDir === 'desc' ? 'asc' : 'desc';
+  else { STATE.posSortCol = col; STATE.posSortDir = 'desc'; }
+  render();
+}
+
+function showLiveToast(msg) {
+  STATE.liveToast = msg;
+  render();
+  setTimeout(() => {
+    if (STATE.liveToast === msg) {
+      STATE.liveToast = '';
+      if (!STATE.syncModalOpen) render();
+    }
+  }, 6500);
+}
+
+async function pollLiveSnapshot(isManual = false) {
+  if (typeof fetch !== 'function') return;
+  const apiUrl = `https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.path}?ref=${GH_CONFIG.branch}`;
+  const headers = {};
+  if (STATE.lastEtag && !isManual) headers['If-None-Match'] = STATE.lastEtag;
+  const savedTok = getSavedToken();
+  if (savedTok) headers['Authorization'] = 'Bearer ' + savedTok;
+
+  try {
+    let res = await fetch(apiUrl, { headers, cache: 'no-cache' });
+    if (res.status === 401 && headers['Authorization']) {
+      delete headers['Authorization'];
+      res = await fetch(apiUrl, { headers, cache: 'no-cache' });
+    }
+    STATE.lastChecked = sgtNowStr();
+    if (res.status === 304) {
+      if (STATE.cloudStatus !== 'live') { STATE.cloudStatus = 'live'; if (!STATE.syncModalOpen) render(); }
+      return;
+    }
+    if (res.ok) {
+      const etag = res.headers.get('ETag');
+      if (etag) STATE.lastEtag = etag;
+      const payload = await res.json();
+      const wasConnected = Boolean(STATE.lastSha);
+      if (payload && payload.sha && payload.content) {
+        const prevVersion = STATE.data && STATE.data.meta ? STATE.data.meta.version_id : '';
+        STATE.lastSha = payload.sha;
+        const remoteData = JSON.parse(base64ToUtf8(payload.content));
+        if (remoteData && Array.isArray(remoteData.mandates)) {
+          const newVersion = remoteData.meta ? remoteData.meta.version_id : '';
+          STATE.cloudStatus = 'live';
+          if (newVersion !== prevVersion) {
+            STATE.data = remoteData;
+            if (!STATE.syncModalOpen) render();
+            if (wasConnected || isManual) {
+              showLiveToast('Live update received — ' + (remoteData.meta.locked_at || remoteData.meta.as_of_date));
+            }
+            return;
+          }
+        }
+      }
+      if (STATE.cloudStatus !== 'live') { STATE.cloudStatus = 'live'; if (!STATE.syncModalOpen) render(); }
+      if (isManual) showLiveToast('Already up to date (' + (STATE.data.meta.as_of_date || 'Latest') + ')');
+      return;
+    }
+  } catch (_) {}
+
+  try {
+    const cdnUrl = `${GH_CONFIG.liveUrl}${GH_CONFIG.path}?t=${Date.now()}`;
+    const res2 = await fetch(cdnUrl, { cache: 'no-store' });
+    if (res2.ok) {
+      const remoteData = await res2.json();
+      const prevVersion = STATE.data && STATE.data.meta ? STATE.data.meta.version_id : '';
+      const newVersion = remoteData && remoteData.meta ? remoteData.meta.version_id : '';
+      STATE.cloudStatus = 'live';
+      if (remoteData && Array.isArray(remoteData.mandates) && newVersion !== prevVersion) {
+        STATE.data = remoteData;
+        if (!STATE.syncModalOpen) render();
+        showLiveToast('Live update received — ' + (remoteData.meta.locked_at || remoteData.meta.as_of_date));
+      }
+    }
+  } catch (_) {
+    if (STATE.cloudStatus === 'connecting') {
+      STATE.cloudStatus = 'offline';
+      if (!STATE.syncModalOpen) render();
+    }
+  }
+}
+
+async function publishBranchFile(token, branch, contentB64, commitMsg) {
+  const url = `https://api.github.com/repos/${GH_CONFIG.owner}/${GH_CONFIG.repo}/contents/${GH_CONFIG.path}`;
+  let sha = undefined;
+  const getRes = await fetch(`${url}?ref=${branch}&t=${Date.now()}`, {
+    headers: { 'Authorization': 'Bearer ' + token },
+    cache: 'no-store'
+  });
+  if (getRes.ok) {
+    const cur = await getRes.json();
+    sha = cur.sha;
+  } else if (getRes.status === 401 || getRes.status === 403) {
+    throw new Error('GitHub token rejected (check Fine-Grained PAT has Contents: Read & Write on im-portfolio-terminal, or regenerate if expired).');
+  }
+  const body = { message: commitMsg, content: contentB64, branch };
+  if (sha) body.sha = sha;
+  const putRes = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+  if (!putRes.ok) {
+    const errTxt = await putRes.text();
+    throw new Error(`GitHub publish failed (${putRes.status}): ${errTxt.slice(0, 140)}`);
+  }
+  return await putRes.json();
+}
+
+async function publishSnapshotToGitHub(rawToken, sourceLabel = 'Manual Publish') {
+  const token = String(rawToken || getSavedToken() || '').trim();
+  if (!token) {
+    STATE.syncTone = 'warn';
+    STATE.syncStatus = 'Paste your one-time GitHub Publisher Token above to broadcast live to everyone.';
+    STATE.pendingPublish = true;
+    render();
+    return false;
+  }
+  try {
+    STATE.syncTone = 'info';
+    STATE.syncStatus = 'Publishing sanitized snapshot live to GitHub for all viewers...';
+    render();
+
+    STATE.data.meta.version_id = String(Date.now());
+    STATE.data.meta.locked_at = sgtNowStr() + ' (' + sourceLabel + ')';
+    const jsonStr = JSON.stringify(STATE.data);
+    const b64 = utf8ToBase64(jsonStr);
+    const msg = `Live IM snapshot update: ${STATE.data.meta.as_of_date} (${sourceLabel})`;
+
+    const resData = await publishBranchFile(token, GH_CONFIG.branch, b64, msg);
+    setSavedToken(token);
+    if (resData && resData.content && resData.content.sha) {
+      STATE.lastSha = resData.content.sha;
+      STATE.lastEtag = '';
+    }
+    publishBranchFile(token, 'main', b64, msg).catch(() => {});
+
+    STATE.cloudStatus = 'live';
+    STATE.pendingPublish = false;
+    STATE.locked = true;
+    STATE.syncTone = 'ok';
+    STATE.syncStatus = 'Published LIVE! Everyone on the link will see this update automatically within seconds.';
+    render();
+    setTimeout(() => {
+      STATE.syncModalOpen = false;
+      STATE.syncStatus = '';
+      showLiveToast('Published live to all viewers — ' + STATE.data.meta.as_of_date);
+    }, 1300);
+    return true;
+  } catch (err) {
+    STATE.syncTone = 'err';
+    STATE.syncStatus = err.message;
+    STATE.pendingPublish = true;
+    render();
+    return false;
+  }
+}
+
+function saveTokenFromInput() {
+  const inp = document.getElementById('ghTokenInput');
+  if (!inp || !inp.value.trim()) return;
+  setSavedToken(inp.value.trim());
+  STATE.syncTone = 'ok';
+  STATE.syncStatus = 'Publisher Token saved in this browser! Drop your Feeder .xlsx below to publish live.';
+  render();
+}
+
+function clearSavedToken() {
+  setSavedToken('');
+  STATE.syncTone = 'info';
+  STATE.syncStatus = 'Publisher Token cleared from this browser.';
+  render();
+}
+
+async function inflateRawBytes(uint8) {
+  const ds = new DecompressionStream('deflate-raw');
+  const writer = ds.writable.getWriter();
+  writer.write(uint8);
+  writer.close();
+  const buf = await new Response(ds.readable).arrayBuffer();
+  return new TextDecoder('utf-8').decode(buf);
+}
+
+async function readXlsxEntries(arrayBuffer) {
+  const bytes = new Uint8Array(arrayBuffer);
+  const view = new DataView(arrayBuffer);
+  let eocd = -1;
+  for (let i = bytes.length - 22; i >= Math.max(0, bytes.length - 65557); i--) {
+    if (view.getUint32(i, true) === 0x06054b50) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('Not a valid .xlsx ZIP archive.');
+  const cdCount = view.getUint16(eocd + 10, true);
+  const cdOffset = view.getUint32(eocd + 16, true);
+  let ptr = cdOffset;
+  const files = {};
+  const dec = new TextDecoder('utf-8');
+  for (let i = 0; i < cdCount; i++) {
+    if (view.getUint32(ptr, true) !== 0x02014b50) break;
+    const method = view.getUint16(ptr + 10, true);
+    const compSize = view.getUint32(ptr + 20, true);
+    const nameLen = view.getUint16(ptr + 28, true);
+    const extraLen = view.getUint16(ptr + 30, true);
+    const commentLen = view.getUint16(ptr + 32, true);
+    const localOff = view.getUint32(ptr + 42, true);
+    const name = dec.decode(bytes.subarray(ptr + 46, ptr + 46 + nameLen));
+    ptr += 46 + nameLen + extraLen + commentLen;
+    if (name.endsWith('.xml') || name.endsWith('.rels')) {
+      if (name.startsWith('xl/externalLinks/')) continue;
+      const lNameLen = view.getUint16(localOff + 26, true);
+      const lExtraLen = view.getUint16(localOff + 28, true);
+      const dataStart = localOff + 30 + lNameLen + lExtraLen;
+      const slice = bytes.subarray(dataStart, dataStart + compSize);
+      files[name] = method === 0 ? dec.decode(slice) : await inflateRawBytes(slice);
+    }
+  }
+  return files;
+}
+
+function parseSheetCells(xmlStr, sharedStrings) {
+  const doc = new DOMParser().parseFromString(xmlStr, 'application/xml');
+  const cells = {};
+  const cNodes = doc.getElementsByTagName('c');
+  for (let i = 0; i < cNodes.length; i++) {
+    const c = cNodes[i];
+    const ref = c.getAttribute('r');
+    const t = c.getAttribute('t');
+    if (t === 'e') continue;
+    const vNode = c.getElementsByTagName('v')[0];
+    const isNode = c.getElementsByTagName('is')[0];
+    let val = null;
+    if (t === 's' && vNode) val = sharedStrings[parseInt(vNode.textContent, 10)] ?? '';
+    else if (t === 'inlineStr' && isNode) val = isNode.textContent;
+    else if (t === 'str' && vNode) val = vNode.textContent;
+    else if (vNode) {
+      const num = parseFloat(vNode.textContent);
+      val = Number.isNaN(num) ? vNode.textContent : num;
+    }
+    if (ref && val !== null) cells[ref] = val;
+  }
+  return cells;
+}
+
+function colLtr(n) {
+  let s = '';
+  while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = Math.floor((n - 1) / 26); }
+  return s;
+}
+function excelDateStr(v) {
+  if (typeof v === 'number' && v > 30000 && v < 70000) {
+    const d = new Date(Math.round((v - 25569) * 86400 * 1000));
+    return d.toISOString().slice(0, 10);
+  }
+  return v ? String(v).trim() : '';
+}
+
+function syncWorkbookSheets(sheetMap) {
+  let updatedCount = 0;
+  if (sheetMap['1_BBG_Hub'] && sheetMap['2_Holdings_Ledger']) {
+    const hub = sheetMap['1_BBG_Hub'];
+    const led = sheetMap['2_Holdings_Ledger'];
+    const dash = sheetMap['5_Dashboard'] || {};
+    const fcn = sheetMap['3_FCN_Tracker'] || {};
+    const lt = sheetMap['4_Lookthrough_Exposure'] || {};
+
+    if (hub['D2']) STATE.data.meta.as_of_date = excelDateStr(hub['D2']);
+    if (typeof hub['J6'] === 'number') STATE.data.macro.acwi_ytd = hub['J6'];
+    if (typeof hub['K6'] === 'number') STATE.data.macro.acwi_1d = hub['K6'];
+    if (typeof hub['J7'] === 'number') STATE.data.macro.spx_ytd = hub['J7'];
+    if (typeof hub['K7'] === 'number') STATE.data.macro.spx_sharpe_ytd = hub['K7'];
+    if (typeof hub['J8'] === 'number') STATE.data.macro.acwi_vol_ytd = hub['J8'];
+    if (typeof hub['K8'] === 'number') STATE.data.macro.acwi_sharpe_ytd = hub['K8'];
+    for (let idx = 0; idx < 5; idx++) {
+      const vr = 16 + idx;
+      if (typeof hub['J' + vr] === 'number' && STATE.data.vol[idx]) {
+        STATE.data.vol[idx].last = hub['J' + vr];
+        if (typeof hub['K' + vr] === 'number') STATE.data.vol[idx].avg_1y = hub['K' + vr];
+      }
+    }
+
+    const ledByMandate = {};
+    const growthPmFallback = {};
+    for (let r = 4; r <= 200; r++) {
+      const mName = led['A' + r];
+      const tk = led['D' + r];
+      if (!mName || !tk) continue;
+      const pmVal = mName === 'Growth' ? parseOptPct(led['F' + r]) : null;
+      if (mName === 'Growth') growthPmFallback[String(tk).toUpperCase()] = pmVal;
+
+      if (typeof led['U' + r] !== 'number') continue;
+      if (!ledByMandate[mName]) ledByMandate[mName] = [];
+      const entry = {
+        name: String(led['O' + r] || led['C' + r] || tk),
+        ref_name: String(led['C' + r] || led['O' + r] || tk),
+        sector: String(led['B' + r] || ''),
+        ticker: String(tk),
+        ac: String(led['E' + r] || 'Cash'),
+        ccy: String(led['P' + r] || 'USD'),
+        w: led['U' + r],
+        d1: Number(led['W' + r] || 0),
+        d5: Number(led['X' + r] || 0),
+        ytd_pos: Number(led['Y' + r] || 0),
+        hpr_usd: Number(led['Z' + r] || 0),
+        c_ytd: Number(led['AC' + r] || 0),
+        vol: Number(led['AE' + r] || 0)
+      };
+      if (mName === 'Growth') entry.premarket = pmVal;
+      ledByMandate[mName].push(entry);
+      updatedCount++;
+    }
+
+    STATE.data.mandates.forEach((m, mIdx) => {
+      if (ledByMandate[m.name] && ledByMandate[m.name].length > 0) {
+        m.positions = ledByMandate[m.name];
+      } else if (m.name === 'Growth') {
+        m.positions.forEach(p => {
+          const k = String(p.ticker).toUpperCase();
+          if (k in growthPmFallback) {
+            p.premarket = growthPmFallback[k];
+            if (growthPmFallback[k] !== null) updatedCount++;
+          }
+        });
+      }
+      const dr = 5 + mIdx;
+      if (typeof dash['E' + dr] === 'number') m.ytd = dash['E' + dr];
+      if (typeof dash['F' + dr] === 'number') m.ytd_ex_fcn = dash['F' + dr];
+      if (typeof dash['G' + dr] === 'number') m.bm_ytd = dash['G' + dr];
+      if (typeof dash['I' + dr] === 'number') m.d1 = dash['I' + dr];
+      if (typeof dash['J' + dr] === 'number') m.w1 = dash['J' + dr];
+      if (typeof dash['K' + dr] === 'number') m.vol_ytd = dash['K' + dr];
+      if (typeof dash['L' + dr] === 'number') m.sharpe_ytd = dash['L' + dr];
+    });
+
+    const spxSpot = fcn['C5'] ?? fcn['D5'], nkySpot = fcn['C6'] ?? fcn['D6'], sx5Spot = fcn['C7'] ?? fcn['D7'];
+    const parsedFcns = [];
+    for (let r = 11; r <= 30; r++) {
+      const nid = fcn['A' + r];
+      if (!nid || typeof fcn['M' + r] !== 'number') continue;
+      const kiPct = Number(fcn['I' + r] || 0.6);
+      const uList = [
+        { ticker: 'SPX Index', name: 'S&P 500', ref: Number(fcn['M' + r]), last: Number(spxSpot || 0) },
+        { ticker: 'NKY Index', name: 'Nikkei 225', ref: Number(fcn['N' + r]), last: Number(nkySpot || 0) },
+        { ticker: 'SX5E Index', name: 'Euro Stoxx 50', ref: Number(fcn['O' + r]), last: Number(sx5Spot || 0) }
+      ].map(u => ({ ...u, pct_ref: u.last / u.ref, chg: (u.last / u.ref) - 1, ki_buffer: (u.last / u.ref) - kiPct }));
+      parsedFcns.push({
+        id: String(nid),
+        label: String(nid) + ' — Autocall Note',
+        mandate: String(fcn['B' + r] || ''),
+        issue_date: excelDateStr(fcn['C' + r]),
+        next_obs: excelDateStr(fcn['D' + r]),
+        days_to_obs: Math.round(Number(fcn['E' + r] || 0)),
+        maturity: excelDateStr(fcn['F' + r]),
+        port_weight: Number(fcn['G' + r] || 0),
+        days_held: Math.round(Number(fcn['H' + r] || 0)),
+        ki_barrier_pct: kiPct,
+        ki_breach_chg: kiPct - 1,
+        ko_barrier_pct: 1.0,
+        coupon_ann: Number(fcn['J' + r] || 0),
+        accrued_coupon: Number(fcn['K' + r] || 0),
+        ytd_contrib: Number(fcn['L' + r] || 0),
+        underlyings: uList
+      });
+    }
+    if (parsedFcns.length > 0) { STATE.data.fcns = parsedFcns; updatedCount += parsedFcns.length; }
+
+    const cMap = {}, issMap = {};
+    for (let b = 0; b < 20; b++) {
+      const c0 = 1 + b * 6;
+      const etfTk = lt[colLtr(c0) + '1'];
+      const etfPortWt = lt[colLtr(c0 + 2) + '1'];
+      if (!etfTk || typeof etfPortWt !== 'number' || etfPortWt <= 0) continue;
+      const etfShort = String(etfTk).split(' ')[0];
+      for (let r = 2; r <= 51; r++) {
+        const hn = lt[colLtr(c0) + r];
+        const ht = lt[colLtr(c0 + 1) + r];
+        const hw = lt[colLtr(c0 + 2) + r];
+        const hc = lt[colLtr(c0 + 3) + r];
+        if (!hn || !ht || typeof hw !== 'number' || hw <= 0 || String(hn).startsWith('#')) continue;
+        const eff = etfPortWt * (hw / 100.0);
+        const key = String(hn).trim();
+        if (!cMap[key]) cMap[key] = { n: key, t: String(ht).trim(), c: String(hc || 'OTHER').trim(), w: 0, s: [] };
+        cMap[key].w += eff;
+        cMap[key].s.push([etfShort, Number((eff * 100).toFixed(3)), Number(hw.toFixed(2))]);
+
+        const ikey = normIssuerKey(key);
+        const tkShort = String(ht).split(' ')[0];
+        if (!issMap[ikey]) issMap[ikey] = { key: ikey, tickers: new Set(), primaryTicker: String(ht).trim(), country: String(hc || '').trim(), eff_weight: 0, sources: [] };
+        issMap[ikey].tickers.add(tkShort);
+        issMap[ikey].eff_weight += eff;
+        issMap[ikey].sources.push({ etf: etfShort + ' (' + tkShort + ')', eff_weight: eff, etf_pct: hw });
+      }
+    }
+    const newConst = Object.values(cMap).sort((a, b) => b.w - a.w);
+    if (newConst.length > 0) {
+      STATE.data.constituents = newConst;
+      updatedCount += newConst.length;
+    }
+
+    const newTop10 = [];
+    for (let r = 56; r <= 65; r++) {
+      const nm = lt['B' + r], tk = lt['C' + r], exp = lt['D' + r];
+      const pmVal = parseOptPct(lt['E' + r]);
+      if (!nm || !tk || typeof exp !== 'number') continue;
+      const ikey = normIssuerKey(nm);
+      const issObj = issMap[ikey];
+      const multiClass = issObj && issObj.tickers.size > 1;
+      const dispName = (ikey === 'ALPHABET INC' && multiClass) ? 'ALPHABET INC (Class A + C)' : String(nm).trim();
+      const dispTk = multiClass ? Array.from(issObj.tickers).join('+') + ' ' + (String(tk).split(' ')[1] || '') : String(tk).trim();
+      newTop10.push({
+        name: dispName,
+        ticker: dispTk.trim(),
+        country: issObj ? issObj.country : '',
+        exposure: exp,
+        sources: issObj ? issObj.sources : [],
+        premarket: pmVal,
+        d1: Number(lt['F' + r] || 0),
+        d5: Number(lt['G' + r] || 0),
+        mtd: Number(lt['H' + r] || 0),
+        ytd: Number(lt['I' + r] || 0),
+        peak_to_today: Number(lt['J' + r] || 0),
+        next_earnings: excelDateStr(lt['K' + r]),
+        days_to_earnings: Math.round(Number(lt['L' + r] || 0)),
+        post_earn_1d: Number(lt['N' + r] || 0),
+        post_earn_10d: Number(lt['O' + r] || 0),
+        since_last_earn: Number(lt['P' + r] || 0)
+      });
+    }
+    if (newTop10.length > 0) {
+      STATE.data.top10 = newTop10;
+      if (newTop10[0]) STATE.expandedLt = newTop10[0].name;
+    } else {
+      for (let i = 0; i < 10; i++) {
+        const r = 56 + i;
+        if (('E' + r) in lt && STATE.data.top10[i]) {
+          const pmVal = parseOptPct(lt['E' + r]);
+          STATE.data.top10[i].premarket = pmVal;
+          if (pmVal !== null) updatedCount++;
+        } else if (STATE.data.top10[i]) {
+          STATE.data.top10[i].premarket = null;
+        }
+      }
+    }
+
+    const newGeo = [];
+    for (let r = 71; r <= 105; r++) {
+      const ctry = lt['B' + r], reg = lt['C' + r], pExp = lt['D' + r], aExp = lt['E' + r];
+      if (!ctry || typeof pExp !== 'number') continue;
+      newGeo.push({
+        country: String(ctry),
+        region: String(reg || ''),
+        port_exposure: pExp,
+        acwi_exposure: Number(aExp || 0),
+        active_weight: pExp - Number(aExp || 0)
+      });
+    }
+    if (newGeo.length > 0) STATE.data.geo = newGeo.sort((a, b) => b.port_exposure - a.port_exposure);
+  } else if (sheetMap['Dashboard']) {
+    const d = sheetMap['Dashboard'];
+    if (typeof d['H12'] === 'number') { STATE.data.mandates[0].ytd = d['H12']; updatedCount++; }
+    if (typeof d['AD12'] === 'number') { STATE.data.mandates[1].ytd = d['AD12']; updatedCount++; }
+    if (typeof d['AS12'] === 'number') { STATE.data.mandates[2].ytd = d['AS12']; updatedCount++; }
+    if (typeof d['BF12'] === 'number') { STATE.data.mandates[3].ytd = d['BF12']; updatedCount++; }
+    if (typeof d['BO12'] === 'number') { STATE.data.mandates[4].ytd = d['BO12']; updatedCount++; }
+    const pe = sheetMap['Port Exposure'] || sheetMap['Port Exposure '];
+    if (pe) {
+      for (let i = 0; i < 10; i++) {
+        const pm = parseOptPct(pe['E' + (56 + i)]);
+        if (STATE.data.top10[i]) STATE.data.top10[i].premarket = pm;
+      }
+    }
+  }
+  return updatedCount;
+}
+
+async function importXlsxFile(file) {
+  try {
+    const inpTok = document.getElementById('ghTokenInput');
+    const typedTok = inpTok && inpTok.value ? inpTok.value.trim() : '';
+    if (typedTok) setSavedToken(typedTok);
+
+    STATE.syncTone = 'info';
+    STATE.syncStatus = 'Parsing & sanitizing ' + file.name + ' locally in browser...';
+    render();
+
+    const ab = await file.arrayBuffer();
+    const files = await readXlsxEntries(ab);
+    const shared = [];
+    if (files['xl/sharedStrings.xml']) {
+      const sDoc = new DOMParser().parseFromString(files['xl/sharedStrings.xml'], 'application/xml');
+      const si = sDoc.getElementsByTagName('si');
+      for (let i = 0; i < si.length; i++) {
+        const ts = si[i].getElementsByTagName('t');
+        let s = '';
+        for (let j = 0; j < ts.length; j++) s += ts[j].textContent;
+        shared.push(s);
+      }
+    }
+    const relMap = {};
+    if (files['xl/_rels/workbook.xml.rels']) {
+      const rDoc = new DOMParser().parseFromString(files['xl/_rels/workbook.xml.rels'], 'application/xml');
+      const rels = rDoc.getElementsByTagName('Relationship');
+      for (let i = 0; i < rels.length; i++) {
+        relMap[rels[i].getAttribute('Id')] = 'xl/' + rels[i].getAttribute('Target').replace(/^\/?xl\//, '');
+      }
+    }
+    const sheetMap = {};
+    if (files['xl/workbook.xml']) {
+      const wDoc = new DOMParser().parseFromString(files['xl/workbook.xml'], 'application/xml');
+      const shs = wDoc.getElementsByTagName('sheet');
+      for (let i = 0; i < shs.length; i++) {
+        const nm = shs[i].getAttribute('name');
+        const rId = shs[i].getAttribute('r:id') || shs[i].getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id');
+        const target = relMap[rId];
+        if (target && files[target]) sheetMap[nm.trim()] = parseSheetCells(files[target], shared);
+      }
+    }
+
+    const updatedCount = syncWorkbookSheets(sheetMap);
+    STATE.data.meta.locked_at = sgtNowStr() + ' (' + file.name + ')';
+    STATE.locked = true;
+
+    const activeTok = getSavedToken();
+    if (activeTok) {
+      await publishSnapshotToGitHub(activeTok, file.name);
+    } else {
+      STATE.pendingPublish = true;
+      STATE.syncTone = 'warn';
+      STATE.syncStatus = `Parsed ${updatedCount} items locally! Paste your Team Publisher Token above and click "Publish Current Snapshot Live to Everyone Now" so all viewers see this update.`;
+      render();
+    }
+  } catch (err) {
+    STATE.syncTone = 'err';
+    STATE.syncStatus = 'Error parsing workbook: ' + err.message;
+    render();
+  }
+}
+
+function exportLockedHtml() {
+  const currentJson = JSON.stringify(STATE.data);
+  let docHtml = document.documentElement.outerHTML;
+  docHtml = docHtml.replace(/const INITIAL_DATA = \{.*?\};/s, 'const INITIAL_DATA = ' + currentJson + ';');
+  const blob = new Blob(['<!DOCTYPE html>\n' + docHtml], { type: 'text/html;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'IM_Locked_Meeting_' + (STATE.data.meta.as_of_date || 'Snapshot') + '.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function renderOverview() {
+  const d = STATE.data;
+  const cards = d.mandates.map(m => {
+    const alpha = m.ytd - m.bm_ytd;
+    const isSel = STATE.selectedMandate === m.id;
+    return `
+      <div onclick="selectMandate('${m.id}', true)" class="cursor-pointer bg-[var(--card)] border ${isSel ? 'border-blue-500 ring-1 ring-blue-500/40' : 'border-[var(--border)]'} rounded-xl p-4 shadow-sm hover:border-blue-400 transition-all">
+        <div class="flex items-center justify-between gap-2 mb-2">
+          <span class="font-semibold text-sm text-[var(--foreground)]">${escHtml(m.name)}</span>
+          <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-[var(--secondary)] text-[var(--muted-foreground)]">${m.positions.length} Pos</span>
+        </div>
+        <div class="flex items-baseline justify-between mb-1">
+          <div>
+            <div class="text-xs text-[var(--muted-foreground)]">YTD Return</div>
+            <div class="text-xl font-bold ${colorCls(m.ytd)}">${fmtPct(m.ytd, 2, true)}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-xs text-[var(--muted-foreground)]">vs Benchmark</div>
+            <div class="text-sm font-semibold ${colorCls(alpha)}">${fmtPct(alpha, 2, true)}</div>
+          </div>
+        </div>
+        <div class="text-xs text-[var(--muted-foreground)] truncate mb-3" title="${escHtml(m.benchmark_desc)}">BM: ${fmtPct(m.bm_ytd, 2, true)} (${escHtml(m.benchmark_desc)})</div>
+        <div class="grid grid-cols-3 gap-1 pt-2 border-t border-[var(--border)] text-xs">
+          <div><span class="text-[var(--muted-foreground)] block">1D</span><span class="font-medium ${colorCls(m.d1)}">${fmtPct(m.d1, 2, true)}</span></div>
+          <div><span class="text-[var(--muted-foreground)] block">Vol</span><span class="font-medium text-[var(--foreground)]">${fmtNum(m.vol_ytd, 1)}%</span></div>
+          <div><span class="text-[var(--muted-foreground)] block">Sharpe</span><span class="font-medium text-[var(--foreground)]">${fmtNum(m.sharpe_ytd, 2)}</span></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const maxAbs = Math.max(12, ...d.mandates.flatMap(m => [Math.abs(m.ytd * 100), Math.abs(m.bm_ytd * 100)]));
+  const perfBars = d.mandates.map(m => {
+    const pW = Math.max(1, (Math.abs(m.ytd * 100) / maxAbs) * 100);
+    const bW = Math.max(1, (Math.abs(m.bm_ytd * 100) / maxAbs) * 100);
+    return `
+      <div class="space-y-1">
+        <div class="flex justify-between text-xs">
+          <span class="font-medium text-[var(--foreground)]">${escHtml(m.name)}</span>
+          <span class="font-medium"><span class="text-blue-600 dark:text-blue-400">Port ${fmtPct(m.ytd, 2, true)}</span> <span class="text-[var(--muted-foreground)]">/ BM ${fmtPct(m.bm_ytd, 2, true)}</span></span>
+        </div>
+        <div class="space-y-1">
+          <div class="w-full h-2.5 bg-[var(--secondary)] rounded-full overflow-hidden">
+            <div class="h-full rounded-full ${m.ytd >= 0 ? 'bg-blue-600' : 'bg-rose-500'}" style="width:${pW.toFixed(1)}%"></div>
+          </div>
+          <div class="w-full h-2 bg-[var(--secondary)] rounded-full overflow-hidden">
+            <div class="h-full rounded-full bg-slate-400 dark:bg-slate-500" style="width:${bW.toFixed(1)}%"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const stackedRows = d.mandates.map(m => {
+    const alloc = computeMandateAlloc(m, false);
+    const segs = AC_ORDER.map(ac => {
+      const pct = Math.max(0, (alloc[ac] || 0) * 100);
+      if (pct < 0.05) return '';
+      return `<div style="width:${pct.toFixed(2)}%;background:${AC_COLORS[ac]}" title="${ac}: ${pct.toFixed(2)}%" class="h-full first:rounded-l last:rounded-r"></div>`;
+    }).join('');
+    return `
+      <tr class="border-b border-[var(--border)] hover:bg-[var(--secondary)]/40 text-xs">
+        <td class="py-2.5 px-3 font-semibold text-[var(--foreground)] whitespace-nowrap">${escHtml(m.name)}</td>
+        <td class="py-2.5 px-3 w-48"><div class="w-44 h-3.5 bg-[var(--secondary)] rounded flex overflow-hidden">${segs}</div></td>
+        ${AC_ORDER.map(ac => `<td class="py-2.5 px-2 text-right font-mono ${alloc[ac] > 0.0001 ? 'text-[var(--foreground)]' : 'text-[var(--muted-foreground)]/50'}">${alloc[ac] > 0.0001 ? fmtPct(alloc[ac], 1) : '—'}</td>`).join('')}
+        <td class="py-2.5 px-3 text-right font-semibold text-emerald-600 dark:text-emerald-400">${fmtPct(Object.values(alloc).reduce((a,b)=>a+b,0), 1)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  const legend = AC_ORDER.map(ac => `
+    <span class="inline-flex items-center gap-1.5 text-xs text-[var(--muted-foreground)]">
+      <span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:${AC_COLORS[ac]}"></span>${ac}
+    </span>
+  `).join('');
+
+  return `
+    <div class="space-y-5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">${cards}</div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="font-semibold text-sm text-[var(--foreground)]">YTD Mandate vs Benchmark</h3>
+            <span class="text-xs text-[var(--muted-foreground)]">As of ${escHtml(d.meta.as_of_date)}</span>
+          </div>
+          <div class="space-y-3.5">${perfBars}</div>
+          <div class="mt-4 pt-3 border-t border-[var(--border)] flex flex-wrap justify-between gap-2 text-xs text-[var(--muted-foreground)]">
+            <span>S&amp;P 500 YTD: <strong class="text-[var(--foreground)]">${fmtPct(d.macro.spx_ytd, 2, true)}</strong> (50-DMA: 7,667)</span>
+            <span>MSCI ACWI Sharpe: <strong class="text-[var(--foreground)]">${fmtNum(d.macro.acwi_sharpe_ytd, 2)}</strong></span>
+          </div>
+        </div>
+        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm overflow-x-auto">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <div>
+              <h3 class="font-semibold text-sm text-[var(--foreground)]">Cross-Mandate Asset Allocation Matrix</h3>
+              <p class="text-xs text-[var(--muted-foreground)]">Portfolio weight breakdown across all 5 mandates</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3 mb-3">${legend}</div>
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b border-[var(--border)] text-xs text-[var(--muted-foreground)]">
+                <th class="py-2 px-3 text-left font-medium">Mandate</th>
+                <th class="py-2 px-3 text-left font-medium">Mix</th>
+                ${AC_ORDER.map(ac => `<th class="py-2 px-2 text-right font-medium whitespace-nowrap">${ac.replace('EQ: ','').replace('FI: ','')}</th>`).join('')}
+                <th class="py-2 px-3 text-right font-medium">Total</th>
+              </tr>
+            </thead>
+            <tbody>${stackedRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPositions() {
+  const d = STATE.data;
+  const mandate = d.mandates.find(m => m.id === STATE.selectedMandate) || d.mandates[0];
+  const isGrowth = mandate.id === 'growth' || mandate.name === 'Growth';
+  const activeSortCol = (!isGrowth && STATE.posSortCol === 'premarket') ? 'w' : STATE.posSortCol;
+
+  const pills = d.mandates.map(m => `
+    <button onclick="selectMandate('${m.id}')" class="px-3.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${m.id === mandate.id ? 'bg-blue-600 text-white shadow-sm' : 'bg-[var(--secondary)] text-[var(--foreground)] hover:opacity-85'}">
+      ${escHtml(m.name)}
+    </button>
+  `).join('');
+
+  const preAlloc = computeMandateAlloc(mandate, false);
+  const postAlloc = computeMandateAlloc(mandate, true);
+  const postSum = Object.values(postAlloc).reduce((a, b) => a + b, 0);
+
+  const contribSorted = [...mandate.positions]
+    .filter(p => Math.abs(p.c_ytd || 0) > 0.00001)
+    .sort((a, b) => b.c_ytd - a.c_ytd);
+  const maxC = Math.max(0.007, ...contribSorted.map(p => Math.abs(p.c_ytd)));
+
+  const contribBars = contribSorted.map(p => {
+    const pctBar = Math.min(100, (Math.abs(p.c_ytd) / maxC) * 100);
+    const pos = p.c_ytd >= 0;
+    return `
+      <div class="grid grid-cols-12 items-center gap-2 text-xs py-1">
+        <div class="col-span-4 truncate font-medium text-[var(--foreground)]" title="${escHtml(p.name)}">${escHtml(p.ref_name || p.name)}</div>
+        <div class="col-span-6 flex items-center">
+          <div class="w-1/2 flex justify-end pr-1 border-r border-[var(--border)]">
+            ${!pos ? `<div class="h-3 bg-rose-500 rounded-l" style="width:${pctBar.toFixed(1)}%"></div>` : ''}
+          </div>
+          <div class="w-1/2 flex justify-start pl-1">
+            ${pos ? `<div class="h-3 bg-emerald-500 rounded-r" style="width:${pctBar.toFixed(1)}%"></div>` : ''}
+          </div>
+        </div>
+        <div class="col-span-2 text-right font-mono font-medium ${colorCls(p.c_ytd)}">${fmtBps(p.c_ytd)}</div>
+      </div>
+    `;
+  }).join('');
+
+  const acSet = ['ALL', ...new Set(mandate.positions.map(p => p.ac))];
+  let rows = mandate.positions.map((p, idx) => ({ ...p, _idx: idx }));
+  if (STATE.posAcFilter !== 'ALL') rows = rows.filter(p => p.ac === STATE.posAcFilter);
+  if (STATE.posSearch.trim()) {
+    const q = STATE.posSearch.trim().toLowerCase();
+    rows = rows.filter(p => (p.name + ' ' + p.ref_name + ' ' + p.ticker + ' ' + p.sector).toLowerCase().includes(q));
+  }
+  rows.sort((a, b) => {
+    const ha = hasNum(a[activeSortCol]);
+    const hb = hasNum(b[activeSortCol]);
+    if (!ha && !hb) return 0;
+    if (!ha) return 1;
+    if (!hb) return -1;
+    const va = Number(a[activeSortCol]);
+    const vb = Number(b[activeSortCol]);
+    return STATE.posSortDir === 'desc' ? (vb - va) : (va - vb);
+  });
+
+  const sortHdr = (col, label) => {
+    const arrow = activeSortCol === col ? (STATE.posSortDir === 'desc' ? ' &darr;' : ' &uarr;') : '';
+    return `<th onclick="sortPositions('${col}')" class="py-2.5 px-2.5 text-right font-medium cursor-pointer hover:text-[var(--foreground)] whitespace-nowrap select-none">${label}${arrow}</th>`;
+  };
+
+  const tableRows = rows.map(p => {
+    const trKey = mandate.id + ':' + p._idx;
+    const trVal = STATE.trades[trKey] || 0;
+    const postW = (p.w || 0) + trVal;
+    return `
+      <tr class="border-b border-[var(--border)] hover:bg-[var(--secondary)]/40 text-xs">
+        <td class="py-2.5 px-3">
+          <div class="font-semibold text-[var(--foreground)]">${escHtml(p.ref_name || p.name)}</div>
+          <div class="text-xs text-[var(--muted-foreground)]">${escHtml(p.ticker)} &bull; ${escHtml(p.sector)} ${p.warn ? `<span class="text-amber-600 dark:text-amber-400 font-medium">(${escHtml(p.warn)})</span>` : ''}</div>
+        </td>
+        <td class="py-2.5 px-2"><span class="px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--foreground)] font-medium whitespace-nowrap">${escHtml(p.ac)}</span></td>
+        <td class="py-2.5 px-2.5 text-right font-mono font-semibold text-[var(--foreground)]">${fmtPct(p.w)}</td>
+        ${!STATE.locked ? `
+          <td class="py-2 px-2 text-right">
+            <input type="number" step="0.5" value="${(trVal * 100).toFixed(1)}" onchange="updateTrade('${trKey}', this.value)"
+              class="w-16 px-1.5 py-1 text-right font-mono text-xs rounded border border-blue-400 bg-[var(--background)] text-[var(--foreground)]" />
+          </td>
+          <td class="py-2.5 px-2 text-right font-mono font-semibold text-blue-600 dark:text-blue-400">${fmtPct(postW)}</td>
+        ` : ''}
+        ${isGrowth ? `<td class="py-2.5 px-2.5 text-right font-mono font-medium ${hasNum(p.premarket) ? colorCls(p.premarket) : 'text-[var(--muted-foreground)]/60'}">${fmtPct(p.premarket, 2, true)}</td>` : ''}
+        <td class="py-2.5 px-2.5 text-right font-mono ${colorCls(p.d1)}">${fmtPct(p.d1, 2, true)}</td>
+        <td class="py-2.5 px-2.5 text-right font-mono ${colorCls(p.d5)}">${fmtPct(p.d5, 2, true)}</td>
+        <td class="py-2.5 px-2.5 text-right font-mono font-medium ${colorCls(p.hpr_usd)}">${fmtPct(p.hpr_usd, 2, true)}</td>
+        <td class="py-2.5 px-2.5 text-right font-mono ${colorCls(p.ytd_pos)}">${fmtPct(p.ytd_pos, 2, true)}</td>
+        <td class="py-2.5 px-2.5 text-right font-mono font-semibold ${colorCls(p.c_ytd)}">${fmtBps(p.c_ytd)}</td>
+        <td class="py-2.5 px-2.5 text-right font-mono text-[var(--muted-foreground)]">${p.vol ? fmtPct(p.vol, 1) : '—'}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return `
+    <div class="space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3.5 shadow-sm">
+        <div class="flex flex-wrap gap-2">${pills}</div>
+        <div class="flex items-center gap-2">
+          <button onclick="toggleLock()" class="px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${STATE.locked ? 'border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)]' : 'border-amber-500 bg-amber-500/15 text-amber-700 dark:text-amber-300'}">
+            ${STATE.locked ? 'Unlock Trade Sandbox' : 'Sandbox Active (Click to Lock)'}
+          </button>
+          ${Object.keys(STATE.trades).length ? `<button onclick="resetSandbox()" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-rose-500/15 text-rose-600 dark:text-rose-400">Reset Trades</button>` : ''}
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold text-sm text-[var(--foreground)]">${escHtml(mandate.name)} — YTD Contribution Waterfall (bps)</h3>
+            <span class="text-xs font-medium ${colorCls(mandate.ytd)}">Total YTD: ${fmtPct(mandate.ytd, 2, true)} (Ex-FCN: ${fmtPct(mandate.ytd_ex_fcn, 2, true)})</span>
+          </div>
+          <div class="max-h-60 overflow-y-auto pr-1 divide-y divide-[var(--border)]/40">${contribBars}</div>
+        </div>
+
+        <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-semibold text-sm text-[var(--foreground)]">Pre-Trade vs Post-Trade Exposure</h3>
+            <span class="text-xs font-mono ${Math.abs(postSum - 1) < 0.001 ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}">Post Sum: ${fmtPct(postSum, 2)}</span>
+          </div>
+          <p class="text-xs text-[var(--muted-foreground)] mb-2.5">${STATE.locked ? 'Frame is locked for presentation. Click "Unlock Trade Sandbox" above to test rebalance trades.' : 'Enter Trade (+/- %) in table below to simulate post-trade weights cleanly.'}</p>
+          <div class="space-y-1.5 text-xs">
+            ${AC_ORDER.filter(ac => preAlloc[ac] > 0.0001 || postAlloc[ac] > 0.0001).map(ac => `
+              <div class="flex items-center justify-between py-1 border-b border-[var(--border)]/50">
+                <span class="font-medium text-[var(--foreground)] flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm" style="background:${AC_COLORS[ac]}"></span>${ac}</span>
+                <span class="font-mono">
+                  <span class="text-[var(--muted-foreground)]">${fmtPct(preAlloc[ac])}</span>
+                  <span class="mx-1 text-[var(--muted-foreground)]">&rarr;</span>
+                  <strong class="text-[var(--foreground)]">${fmtPct(postAlloc[ac])}</strong>
+                </span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <input type="text" placeholder="Search holding, ticker, sector..." value="${escHtml(STATE.posSearch)}"
+              oninput="STATE.posSearch=this.value;render()"
+              class="px-3 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] w-56" />
+            <select onchange="STATE.posAcFilter=this.value;render()" class="px-2.5 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]">
+              ${acSet.map(ac => `<option value="${escHtml(ac)}" ${STATE.posAcFilter === ac ? 'selected' : ''}>${ac === 'ALL' ? 'All Asset Classes' : escHtml(ac)}</option>`).join('')}
+            </select>
+          </div>
+          <div class="text-xs text-[var(--muted-foreground)]">Showing ${rows.length} of ${mandate.positions.length} positions &bull; Click column headers to sort</div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b border-[var(--border)] text-xs text-[var(--muted-foreground)]">
+                <th class="py-2.5 px-3 text-left font-medium">Position / Ticker</th>
+                <th class="py-2.5 px-2 text-left font-medium">Class</th>
+                ${sortHdr('w', 'Weight')}
+                ${!STATE.locked ? `<th class="py-2.5 px-2 text-right font-medium text-blue-600 dark:text-blue-400">Trade (%)</th><th class="py-2.5 px-2 text-right font-medium text-blue-600 dark:text-blue-400">After Trade</th>` : ''}
+                ${isGrowth ? sortHdr('premarket', 'Premarket %') : ''}
+                ${sortHdr('d1', '1D %')}
+                ${sortHdr('d5', '5D %')}
+                ${sortHdr('hpr_usd', 'HPR (USD)')}
+                ${sortHdr('ytd_pos', 'Asset YTD')}
+                ${sortHdr('c_ytd', 'YTD Contrib')}
+                ${sortHdr('vol', '5Y Vol')}
+              </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderLookthrough() {
+  const d = STATE.data;
+  const quickTerms = ['', 'PALANTIR', 'ALPHABET', 'NVIDIA', 'TAIWAN SEMI', 'UNITEDHEALTH', 'BROADCOM', 'DBS'];
+  const q = STATE.ltSearch.trim().toLowerCase();
+  const filteredConst = d.constituents.filter(c => !q || (c.n + ' ' + c.t + ' ' + c.c).toLowerCase().includes(q)).slice(0, 20);
+  const totalSearchWeight = q ? d.constituents.filter(c => (c.n + ' ' + c.t).toLowerCase().includes(q)).reduce((s, c) => s + c.w, 0) : null;
+
+  const top10Rows = d.top10.map((item, i) => {
+    const urgent = item.days_to_earnings > 0 && item.days_to_earnings <= 7;
+    const isExp = STATE.expandedLt === item.name;
+    const srcBadges = (item.sources || []).map(s => `<span class="px-2 py-0.5 rounded bg-[var(--secondary)] text-[var(--foreground)] font-mono text-xs">${escHtml(s.etf)}: ${(s.eff_weight*100).toFixed(2)}%</span>`).join(' ');
+    return `
+      <tr onclick="STATE.expandedLt=STATE.expandedLt==='${escHtml(item.name)}'?'':'${escHtml(item.name)}';render()" class="border-b border-[var(--border)] hover:bg-[var(--secondary)]/40 text-xs cursor-pointer">
+        <td class="py-2.5 px-2.5 text-center font-mono text-[var(--muted-foreground)]">${i + 1}</td>
+        <td class="py-2.5 px-3">
+          <div class="font-semibold text-[var(--foreground)]">${escHtml(item.name)}</div>
+          <div class="text-xs text-[var(--muted-foreground)]">${escHtml(item.ticker)} &bull; Click to view sleeve attribution</div>
+          ${isExp && srcBadges ? `<div class="mt-1.5 flex flex-wrap gap-1.5">${srcBadges}</div>` : ''}
+        </td>
+        <td class="py-2.5 px-2.5 text-right font-mono font-bold text-blue-600 dark:text-blue-400">${fmtPct(item.exposure)}</td>
+        <td class="py-2.5 px-2.5 text-right font-mono font-medium ${hasNum(item.premarket) ? colorCls(item.premarket) : 'text-[var(--muted-foreground)]/60'}">${fmtPct(item.premarket, 2, true)}</td>
+        <td class="py-2.5 px-2 text-right font-mono ${colorCls(item.d1)}">${fmtPct(item.d1, 2, true)}</td>
+        <td class="py-2.5 px-2 text-right font-mono ${colorCls(item.d5)}">${fmtPct(item.d5, 2, true)}</td>
+        <td class="py-2.5 px-2 text-right font-mono ${colorCls(item.mtd)}">${fmtPct(item.mtd, 2, true)}</td>
+        <td class="py-2.5 px-2 text-right font-mono font-medium ${colorCls(item.ytd)}">${fmtPct(item.ytd, 1, true)}</td>
+        <td class="py-2.5 px-2.5 text-right whitespace-nowrap">
+          ${item.next_earnings ? `<span class="px-2 py-0.5 rounded font-medium ${urgent ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300' : 'bg-[var(--secondary)] text-[var(--foreground)]'}">${escHtml(item.next_earnings)} (${item.days_to_earnings}d)</span>` : '—'}
+        </td>
+        <td class="py-2.5 px-2 text-right font-mono ${colorCls(item.post_earn_1d)}">${fmtPct(item.post_earn_1d, 1, true)}</td>
+        <td class="py-2.5 px-2 text-right font-mono ${colorCls(item.since_last_earn)}">${fmtPct(item.since_last_earn, 1, true)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  const geoRows = d.geo.slice(0, 12).map(g => {
+    const act = g.active_weight;
+    return `
+      <tr class="border-b border-[var(--border)] text-xs">
+        <td class="py-2 px-3 font-medium text-[var(--foreground)]">${escHtml(g.country)}</td>
+        <td class="py-2 px-2 text-[var(--muted-foreground)]">${escHtml(g.region)}</td>
+        <td class="py-2 px-2 text-right font-mono text-[var(--foreground)]">${fmtPct(g.port_exposure, 2)}</td>
+        <td class="py-2 px-2 text-right font-mono text-[var(--muted-foreground)]">${fmtPct(g.acwi_exposure, 2)}</td>
+        <td class="py-2 px-3 text-right font-mono font-semibold ${colorCls(act)}">${fmtPct(act, 2, true)}</td>
+      </tr>
+    `;
+  }).join('');
+
+  return `
+    <div class="space-y-4">
+      <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-4 py-2.5 flex items-center justify-between gap-2 text-xs">
+        <strong class="text-emerald-700 dark:text-emerald-300">Active Growth Look-through, dynamically tracked.</strong>
+      </div>
+
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <h3 class="font-semibold text-sm text-[var(--foreground)]">Top 10 Effective Portfolio Holdings &amp; Earnings Catalyst Monitor</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Grouped share classes (e.g. GOOGL + GOOG consolidated) &bull; Click any holding to inspect sleeve attribution</p>
+          </div>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="border-b border-[var(--border)] text-xs text-[var(--muted-foreground)]">
+                <th class="py-2 px-2.5 text-center font-medium">#</th>
+                <th class="py-2 px-3 text-left font-medium">Effective Holding</th>
+                <th class="py-2 px-2.5 text-right font-medium">Eff. Exposure</th>
+                <th class="py-2 px-2.5 text-right font-medium">Premarket %</th>
+                <th class="py-2 px-2 text-right font-medium">1D %</th>
+                <th class="py-2 px-2 text-right font-medium">5D %</th>
+                <th class="py-2 px-2 text-right font-medium">MTD %</th>
+                <th class="py-2 px-2 text-right font-medium">YTD %</th>
+                <th class="py-2 px-2.5 text-right font-medium">Next Earnings</th>
+                <th class="py-2 px-2 text-right font-medium">Last +1D</th>
+                <th class="py-2 px-2 text-right font-medium">Since Earn</th>
+              </tr>
+            </thead>
+            <tbody>${top10Rows}</tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <h3 class="font-semibold text-sm text-[var(--foreground)]">Instant Look-Through Stock Search</h3>
+            ${totalSearchWeight !== null ? `<span class="px-2.5 py-0.5 rounded-full bg-blue-500/15 text-blue-600 dark:text-blue-400 text-xs font-semibold">Matched Exposure: ${fmtPct(totalSearchWeight, 3)}</span>` : ''}
+          </div>
+          <div class="flex flex-wrap items-center gap-2 mb-3">
+            <input type="text" placeholder="Search company or ticker (e.g. Palantir, TSM, UNH)..."
+              value="${escHtml(STATE.ltSearch)}" oninput="STATE.ltSearch=this.value;render()"
+              class="px-3 py-1.5 rounded-lg text-xs border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] flex-1 min-w-[200px]" />
+            ${quickTerms.map(t => `<button onclick="STATE.ltSearch='${t}';render()" class="px-2.5 py-1 rounded text-xs font-medium ${STATE.ltSearch.toUpperCase() === t ? 'bg-blue-600 text-white' : 'bg-[var(--secondary)] text-[var(--muted-foreground)] hover:text-[var(--foreground)]'}">${t || 'Top 20'}</button>`).join('')}
+          </div>
+          <div class="max-h-72 overflow-y-auto overflow-x-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="border-b border-[var(--border)] text-xs text-[var(--muted-foreground)]">
+                  <th class="py-2 px-2.5 text-left font-medium">Company</th>
+                  <th class="py-2 px-2 text-left font-medium">Country</th>
+                  <th class="py-2 px-2 text-right font-medium">Eff. Weight</th>
+                  <th class="py-2 px-2.5 text-left font-medium">Sleeve Breakdown (% of Port)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${filteredConst.map(c => `
+                  <tr class="border-b border-[var(--border)]/60 text-xs">
+                    <td class="py-2 px-2.5 font-medium text-[var(--foreground)]">${escHtml(c.n)} <span class="text-[var(--muted-foreground)] font-mono">(${escHtml(c.t.split(' ')[0])})</span></td>
+                    <td class="py-2 px-2 text-[var(--muted-foreground)]">${escHtml(c.c)}</td>
+                    <td class="py-2 px-2 text-right font-mono font-semibold text-[var(--foreground)]">${fmtPct(c.w, 3)}</td>
+                    <td class="py-2 px-2.5 text-[var(--muted-foreground)] font-mono">${c.s.map(s => `${s[0]}:${s[1].toFixed(2)}%`).join(', ')}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+          <h3 class="font-semibold text-sm text-[var(--foreground)] mb-1">Geographic Look-Through vs MSCI ACWI</h3>
+          <p class="text-xs text-[var(--muted-foreground)] mb-3">Active overweight in Singapore (+4.0%) &amp; Switzerland (+3.6%) vs US (-32.9%)</p>
+          <div class="overflow-x-auto max-h-80 overflow-y-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="border-b border-[var(--border)] text-xs text-[var(--muted-foreground)]">
+                  <th class="py-2 px-3 text-left font-medium">Country</th>
+                  <th class="py-2 px-2 text-left font-medium">Region</th>
+                  <th class="py-2 px-2 text-right font-medium">Port</th>
+                  <th class="py-2 px-2 text-right font-medium">ACWI</th>
+                  <th class="py-2 px-3 text-right font-medium">Active</th>
+                </tr>
+              </thead>
+              <tbody>${geoRows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderFcns() {
+  const d = STATE.data;
+  const shocks = { 'SPX Index': STATE.fcnShockSpx / 100, 'NKY Index': STATE.fcnShockNky / 100, 'SX5E Index': STATE.fcnShockSx5e / 100 };
+
+  const noteCards = d.fcns.map(n => {
+    const legs = n.underlyings.map(u => {
+      const sh = shocks[u.ticker] || 0;
+      const simSpot = u.last * (1 + sh);
+      const simPctRef = simSpot / u.ref;
+      const kiBuf = simPctRef - n.ki_barrier_pct;
+      const kiBreachPx = u.ref * n.ki_barrier_pct;
+      const dropToKiFromSpot = (kiBreachPx / simSpot) - 1;
+      return { ...u, simSpot, simPctRef, kiBuf, kiBreachPx, dropToKiFromSpot };
+    });
+    const worst = legs.reduce((a, b) => a.simPctRef < b.simPctRef ? a : b);
+    const breached = worst.kiBuf <= 0;
+    const koTriggered = legs.every(l => l.simPctRef >= n.ko_barrier_pct);
+
+    return `
+      <div class="bg-[var(--card)] border ${breached ? 'border-rose-500 ring-1 ring-rose-500/40' : 'border-[var(--border)]'} rounded-xl p-4 shadow-sm space-y-3">
+        <div class="flex items-start justify-between gap-2">
+          <div>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-purple-500/15 text-purple-700 dark:text-purple-300">${escHtml(n.mandate)}</span>
+            <h3 class="font-semibold text-base text-[var(--foreground)] mt-1">${escHtml(n.label)}</h3>
+            <div class="text-xs text-[var(--muted-foreground)]">Issued ${escHtml(n.issue_date)} &bull; Maturity ${escHtml(n.maturity)}</div>
+          </div>
+          <div class="text-right">
+            <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400">${fmtPct(n.coupon_ann)} <span class="text-xs font-normal text-[var(--muted-foreground)]">p.a.</span></div>
+            <div class="text-xs text-[var(--muted-foreground)]">Next Obs: <strong>${n.days_to_obs}d</strong> (${escHtml(n.next_obs)})</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 p-2.5 rounded-lg bg-[var(--secondary)]/60 text-xs">
+          <div><span class="text-[var(--muted-foreground)] block">KI Barrier</span><strong class="text-[var(--foreground)]">${fmtPct(n.ki_barrier_pct, 0)} of Ref</strong></div>
+          <div><span class="text-[var(--muted-foreground)] block">Accrued Cpn</span><strong class="text-[var(--foreground)]">${fmtPct(n.accrued_coupon, 2)}</strong></div>
+          <div><span class="text-[var(--muted-foreground)] block">YTD Contrib</span><strong class="text-emerald-600 dark:text-emerald-400">${fmtBps(n.ytd_contrib)}</strong></div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs px-1">
+          <span>Worst-Of: <strong class="text-[var(--foreground)]">${escHtml(worst.name)} (${fmtPct(worst.simPctRef, 1)})</strong></span>
+          <span class="px-2 py-0.5 rounded font-semibold ${breached ? 'bg-rose-500/20 text-rose-600 dark:text-rose-300' : koTriggered ? 'bg-blue-500/20 text-blue-600 dark:text-blue-300' : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300'}">
+            ${breached ? 'KI BREACHED' : koTriggered ? 'AUTOCALL KO (>=100%)' : 'SAFE (+' + (worst.kiBuf*100).toFixed(1) + '% vs KI)'}
+          </span>
+        </div>
+
+        <div class="space-y-2.5 pt-1">
+          ${legs.map(l => {
+            const isWorst = l.ticker === worst.ticker;
+            const barPos = Math.max(0, Math.min(100, ((l.simPctRef - 0.4) / 0.75) * 100));
+            const kiLinePos = ((n.ki_barrier_pct - 0.4) / 0.75) * 100;
+            const koLinePos = ((1.0 - 0.4) / 0.75) * 100;
+            return `
+              <div class="p-2.5 rounded-lg border ${isWorst ? 'border-amber-500/50 bg-amber-500/5' : 'border-[var(--border)]'} text-xs space-y-1.5">
+                <div class="flex justify-between">
+                  <span class="font-semibold text-[var(--foreground)]">${escHtml(l.name)} ${isWorst ? '<span class="text-amber-600 dark:text-amber-400">(Worst-Of)</span>' : ''}</span>
+                  <span class="font-mono"><span class="text-[var(--muted-foreground)]">Ref ${fmtNum(l.ref, 1)} &rarr;</span> <strong>${fmtNum(l.simSpot, 1)}</strong> (${fmtPct(l.simPctRef, 1)})</span>
+                </div>
+                <div class="relative w-full h-2.5 bg-[var(--secondary)] rounded-full overflow-hidden">
+                  <div class="absolute top-0 bottom-0 w-0.5 bg-rose-500 z-10" style="left:${kiLinePos.toFixed(1)}%" title="KI Barrier"></div>
+                  <div class="absolute top-0 bottom-0 w-0.5 bg-blue-500 z-10" style="left:${koLinePos.toFixed(1)}%" title="KO 100%"></div>
+                  <div class="h-full rounded-full ${l.kiBuf <= 0 ? 'bg-rose-500' : l.kiBuf < 0.15 ? 'bg-amber-500' : 'bg-emerald-500'}" style="width:${barPos.toFixed(1)}%"></div>
+                </div>
+                <div class="flex justify-between text-[var(--muted-foreground)]">
+                  <span>KI Level: <strong class="text-[var(--foreground)] font-mono">${fmtNum(l.kiBreachPx, 0)}</strong></span>
+                  <span>Spot Drop to KI: <strong class="text-[var(--foreground)] font-mono">${fmtPct(l.dropToKiFromSpot, 1)}</strong></span>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="space-y-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+          <div>
+            <h3 class="font-semibold text-sm text-[var(--foreground)]">Meeting Stress-Test Simulator — Underlying Index Shock</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Drag sliders during Investment Committee discussions to test Knock-In (KI) &amp; Autocall (KO) resilience</p>
+          </div>
+          <button onclick="STATE.fcnShockSpx=0;STATE.fcnShockNky=0;STATE.fcnShockSx5e=0;render()" class="px-3 py-1 rounded-lg text-xs font-medium bg-[var(--secondary)] text-[var(--foreground)]">Reset Shocks (0%)</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="p-3 rounded-lg bg-[var(--secondary)]/50">
+            <div class="flex justify-between mb-1 font-medium"><span>S&amp;P 500 (Spot 7,561.7)</span><span class="font-mono ${colorCls(STATE.fcnShockSpx)}">${STATE.fcnShockSpx > 0 ? '+' : ''}${STATE.fcnShockSpx}%</span></div>
+            <input type="range" min="-45" max="15" step="1" value="${STATE.fcnShockSpx}" oninput="STATE.fcnShockSpx=Number(this.value);render()" class="w-full accent-blue-600" />
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--secondary)]/50">
+            <div class="flex justify-between mb-1 font-medium"><span>Nikkei 225 (Spot 60,182.5)</span><span class="font-mono ${colorCls(STATE.fcnShockNky)}">${STATE.fcnShockNky > 0 ? '+' : ''}${STATE.fcnShockNky}%</span></div>
+            <input type="range" min="-45" max="20" step="1" value="${STATE.fcnShockNky}" oninput="STATE.fcnShockNky=Number(this.value);render()" class="w-full accent-blue-600" />
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--secondary)]/50">
+            <div class="flex justify-between mb-1 font-medium"><span>Euro Stoxx 50 (Spot 6,386.9)</span><span class="font-mono ${colorCls(STATE.fcnShockSx5e)}">${STATE.fcnShockSx5e > 0 ? '+' : ''}${STATE.fcnShockSx5e}%</span></div>
+            <input type="range" min="-45" max="15" step="1" value="${STATE.fcnShockSx5e}" oninput="STATE.fcnShockSx5e=Number(this.value);render()" class="w-full accent-blue-600" />
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">${noteCards}</div>
+    </div>
+  `;
+}
+
+function renderAudit() {
+  return `
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 text-xs">
+      <div class="lg:col-span-7 bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm space-y-3">
+        <h3 class="font-semibold text-base text-[var(--foreground)]">Live GitHub Cloud Architecture &amp; Excel Audit</h3>
+        <div class="grid grid-cols-3 gap-3 py-2">
+          <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30">
+            <div class="text-[var(--muted-foreground)]">Live Cloud Sync</div>
+            <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400">ETag Real-Time</div>
+            <div class="text-[var(--muted-foreground)]">Auto-updates every 10s</div>
+          </div>
+          <div class="p-3 rounded-lg bg-blue-500/10 border border-blue-500/30">
+            <div class="text-[var(--muted-foreground)]">Data Sanitization</div>
+            <div class="text-lg font-bold text-blue-600 dark:text-blue-400">Zero MV / AUM</div>
+            <div class="text-[var(--muted-foreground)]">Stripped in-browser first</div>
+          </div>
+          <div class="p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+            <div class="text-[var(--muted-foreground)]">Workbook Size</div>
+            <div class="text-lg font-bold text-amber-600 dark:text-amber-400">5.42 MB &rarr; 101 KB</div>
+            <div class="text-[var(--muted-foreground)]">88% fewer BBG calls</div>
+          </div>
+        </div>
+        <ul class="space-y-2 text-[var(--foreground)] list-disc pl-4">
+          <li><strong>Zero-Backend Live Broadcast for Everyone:</strong> Uploading <code>Portfolio_Bloomberg_Feeder_Optimized.xlsx</code> parses &amp; strips confidential dollar figures locally in your browser and commits only sanitized percentages to <code>data/snapshot.json</code> on GitHub.</li>
+          <li><strong>Automatic Live Screen Refresh:</strong> Every colleague viewing <a href="${GH_CONFIG.liveUrl}" target="_blank" class="text-blue-600 dark:text-blue-400 underline">${GH_CONFIG.liveUrl}</a> polls GitHub using zero-quota HTTP <code>ETag</code> checks every 10 seconds and updates on screen automatically without refreshing.</li>
+          <li><strong>Manual Premarket % Columns Wired End-to-End:</strong> Empty <code>%</code>-formatted blue cells in <code>2_Holdings_Ledger!F4:F17</code> (Growth positions) and <code>4_Lookthrough_Exposure!E56:E65</code> (Top 10 effective holdings) sync straight to the live site.</li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-5 bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm space-y-3">
+        <h3 class="font-semibold text-base text-[var(--foreground)]">Daily Live Publishing Routine</h3>
+        <div class="space-y-3">
+          <div class="p-3 rounded-lg bg-[var(--secondary)]/60 border border-[var(--border)]">
+            <div class="font-semibold text-[var(--foreground)]">1. Save Feeder Workbook at Bloomberg Terminal</div>
+            <p class="text-[var(--muted-foreground)] mt-0.5">Open <code>Portfolio_Bloomberg_Feeder_Optimized.xlsx</code>, optionally enter premarket % in <code>2_Holdings_Ledger!Col F</code> and <code>4_Lookthrough_Exposure!Col E</code>, and press <code>Ctrl+S</code>.</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--secondary)]/60 border border-[var(--border)]">
+            <div class="font-semibold text-[var(--foreground)]">2. Drop Excel into "Upload &amp; Publish Live"</div>
+            <p class="text-[var(--muted-foreground)] mt-0.5">Click <strong>"Upload &amp; Publish Live"</strong> at the top right (paste your one-time Team Publisher Token once per browser) and drop the saved <code>.xlsx</code> file.</p>
+          </div>
+          <div class="p-3 rounded-lg bg-[var(--secondary)]/60 border border-[var(--border)]">
+            <div class="font-semibold text-[var(--foreground)]">3. Everyone Sees It Update Live</div>
+            <p class="text-[var(--muted-foreground)] mt-0.5">All colleagues with the link open in meeting rooms, laptops, or iPads see the new numbers appear live within ~5–10 seconds.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSyncModal() {
+  if (!STATE.syncModalOpen) return '';
+  const savedTok = getSavedToken();
+  const statusColors = {
+    ok: 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300',
+    warn: 'bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-300',
+    err: 'bg-rose-500/15 border border-rose-500/30 text-rose-700 dark:text-rose-300',
+    info: 'bg-[var(--secondary)] text-[var(--foreground)]'
+  };
+  const stCls = statusColors[STATE.syncTone] || statusColors.info;
+
+  return `
+    <div class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl max-w-lg w-full p-5 shadow-xl space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-semibold text-base text-[var(--foreground)]">Upload Feeder Excel &amp; Publish Live</h3>
+            <p class="text-xs text-[var(--muted-foreground)]">Updates the live site for everyone viewing the link (all MV &amp; AUM stripped in-browser)</p>
+          </div>
+          <button onclick="STATE.syncModalOpen=false;STATE.syncStatus='';render()" class="px-2.5 py-1 rounded text-xs bg-[var(--secondary)] text-[var(--foreground)]">Close</button>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-[var(--secondary)]/60 border border-[var(--border)] space-y-2 text-xs">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-semibold text-[var(--foreground)]">Team Publisher Key (Saved Locally in Browser Only)</span>
+            ${savedTok
+              ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-semibold">Connected &bull; <button onclick="clearSavedToken()" class="underline font-normal">Clear</button></span>`
+              : `<button onclick="STATE.showTokenHelp=!STATE.showTokenHelp;render()" class="text-blue-600 dark:text-blue-400 underline font-medium">${STATE.showTokenHelp ? 'Hide Setup Guide' : 'How to create (30s)'}</button>`
+            }
+          </div>
+          ${!savedTok ? `
+            <div class="flex gap-2">
+              <input id="ghTokenInput" type="password" placeholder="Paste GitHub Token (github_pat_... or ghp_...)"
+                class="flex-1 px-2.5 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] font-mono text-xs" />
+              <button onclick="saveTokenFromInput()" class="px-3 py-1.5 rounded-lg bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 font-semibold">Save Key</button>
+            </div>
+          ` : `<div class="text-[var(--muted-foreground)]">Dropping an <code>.xlsx</code> below will automatically publish live to <code>${GH_CONFIG.owner}/${GH_CONFIG.repo}</code> for all viewers.</div>`}
+          ${STATE.showTokenHelp && !savedTok ? `
+            <ol class="list-decimal pl-4 space-y-1 text-[var(--muted-foreground)] pt-1">
+              <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" class="text-blue-600 dark:text-blue-400 underline">GitHub Fine-Grained Tokens</a> on <code>${GH_CONFIG.owner}</code>.</li>
+              <li>Select <strong>Only select repositories</strong> &rarr; choose <code>${GH_CONFIG.repo}</code> (set Expiration up to 1 year, or use a Classic token with <em>No expiration</em> since <code>${GH_CONFIG.owner}</code> is dedicated to this app).</li>
+              <li>Under <strong>Repository permissions</strong>, set <strong>Contents</strong> to <strong>Read and write</strong>, generate token, and paste above once.</li>
+            </ol>
+          ` : ''}
+        </div>
+
+        <label class="block border-2 border-dashed border-blue-500/50 hover:border-blue-500 rounded-xl p-6 text-center cursor-pointer bg-blue-500/5 transition-colors">
+          <div class="font-semibold text-sm text-[var(--foreground)] mb-1">Drop <code>Portfolio_Bloomberg_Feeder_Optimized.xlsx</code> Here or Click to Browse</div>
+          <div class="text-xs text-[var(--muted-foreground)]">Syncs all 5 mandates, Growth Premarket % (<code>Col F</code>), and Top 10 Premarket % (<code>Col E</code>) &amp; broadcasts live</div>
+          <input type="file" accept=".xlsx" class="hidden" onchange="if(this.files[0]) importXlsxFile(this.files[0])" />
+        </label>
+
+        ${STATE.pendingPublish ? `
+          <button onclick="const el=document.getElementById('ghTokenInput');publishSnapshotToGitHub(el?el.value:'','Live Broadcast')"
+            class="w-full py-2.5 rounded-xl text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm">
+            Publish Current Snapshot Live to Everyone Now
+          </button>
+        ` : ''}
+
+        ${STATE.syncStatus ? `<div class="p-3 rounded-xl text-xs font-medium ${stCls}">${escHtml(STATE.syncStatus)}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function render() {
+  const d = STATE.data;
+  const tabs = [
+    ['overview', 'Executive Overview'],
+    ['positions', 'Mandates & Attribution'],
+    ['lookthrough', 'Top 10 Look-Through & Geo'],
+    ['fcn', 'FCN Barrier Monitor'],
+    ['audit', 'Live Cloud & Guide']
+  ];
+
+  const volPills = d.vol.map(v => {
+    const diff = v.last - v.avg_1y;
+    return `
+      <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--secondary)]/70 text-xs whitespace-nowrap">
+        <span class="font-medium text-[var(--foreground)]">${escHtml(v.name)}:</span>
+        <strong class="font-mono text-[var(--foreground)]">${fmtNum(v.last, 1)}</strong>
+        <span class="text-[var(--muted-foreground)]">(1Y: ${fmtNum(v.avg_1y, 1)}, <span class="${diff > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}">${diff > 0 ? '+' : ''}${diff.toFixed(1)}</span>)</span>
+      </div>
+    `;
+  }).join('');
+
+  const liveBadge = STATE.cloudStatus === 'live'
+    ? `<button onclick="pollLiveSnapshot(true)" title="Connected to GitHub Live Feed (auto-checks every 10s). Click to check now." class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-500/30"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>LIVE FEED &bull; AUTO-SYNC</button>`
+    : `<button onclick="pollLiveSnapshot(true)" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--secondary)] text-[var(--muted-foreground)] border border-[var(--border)]">Check Live Feed</button>`;
+
+  let bodyHtml = '';
+  if (STATE.activeTab === 'overview') bodyHtml = renderOverview();
+  else if (STATE.activeTab === 'positions') bodyHtml = renderPositions();
+  else if (STATE.activeTab === 'lookthrough') bodyHtml = renderLookthrough();
+  else if (STATE.activeTab === 'fcn') bodyHtml = renderFcns();
+  else bodyHtml = renderAudit();
+
+  document.getElementById('app').innerHTML = `
+    <div class="max-w-[1440px] mx-auto space-y-4">
+      ${STATE.liveToast ? `
+        <div class="bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-md flex items-center justify-between text-xs font-semibold">
+          <span>${escHtml(STATE.liveToast)}</span>
+          <button onclick="STATE.liveToast='';render()" class="opacity-80 hover:opacity-100">Dismiss</button>
+        </div>
+      ` : ''}
+      <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-lg font-bold text-[var(--foreground)]">Investment Management — Portfolio &amp; Attribution Frame</h1>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${STATE.locked ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30' : 'bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/30'}">
+              ${STATE.locked ? 'LOCKED SNAPSHOT' : 'SANDBOX UNLOCKED'}
+            </span>
+            ${liveBadge}
+          </div>
+          <div class="text-xs text-[var(--muted-foreground)] mt-0.5">
+            Snapshot Date: <strong class="text-[var(--foreground)]">${escHtml(d.meta.as_of_date)}</strong> &bull;
+            Last Synced: ${escHtml(d.meta.locked_at)}
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 print:hidden">
+          <button onclick="STATE.syncModalOpen=true;render()" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-700 shadow-sm">
+            Upload &amp; Publish Live
+          </button>
+          <button onclick="exportLockedHtml()" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)] hover:opacity-85">
+            Export Locked .HTML
+          </button>
+          <button onclick="window.print()" class="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+            Print
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 overflow-x-auto pb-1">${volPills}</div>
+      <div class="flex flex-wrap gap-1.5 border-b border-[var(--border)] pb-2 print:hidden">
+        ${tabs.map(([id, lbl]) => `
+          <button onclick="setTab('${id}')" class="px-3.5 py-2 rounded-lg text-xs font-semibold transition-all ${STATE.activeTab === id ? 'bg-[var(--foreground)] text-[var(--background)] shadow-sm' : 'text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--secondary)]'}">
+            ${lbl}
+          </button>
+        `).join('')}
+      </div>
+      ${bodyHtml}
+    </div>
+    ${renderSyncModal()}
+  `;
+}
+
+function bootApp() {
+  render();
+  pollLiveSnapshot(false);
+  if (typeof setInterval === 'function') {
+    setInterval(() => {
+      if (typeof document !== 'undefined' && document.hidden) return;
+      pollLiveSnapshot(false);
+    }, GH_CONFIG.pollMs);
+  }
+  if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) pollLiveSnapshot(false);
+    });
+  }
+}
+
+window.addEventListener('DOMContentLoaded', bootApp);
+  </script>
+</body>
+</html>
